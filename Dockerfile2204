@@ -1,0 +1,73 @@
+# Build:
+# UID=(id -u) GID=(id -g) docker build --build-arg PASSWD=<password> -t <image_name> -f <dockerfile> .
+#
+# Run:
+# docker run --label no-prune -it --name <container_name> --hostname <hostname> --volume $HOME:/host_home <image_name>
+
+FROM ubuntu:22.04
+
+ARG USER=shank
+ARG PASSWD=pass
+ARG UID=1000
+ARG GID=1000
+
+ENV USER ${USER}
+ENV HOME /home/${USER}
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y sudo 
+
+RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
+    echo "${USER}:${PASSWD}" | chpasswd && \
+    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+RUN echo "${USER}:${PASSWD}" | chpasswd
+
+# dev packages
+RUN apt-get install -y \
+    autoconf \
+    clang \
+    curl \
+    fish \
+    gcc \
+    git \
+    htop \
+    make \
+    python3 \
+    python-is-python3 \
+    ranger \
+    ripgrep \
+    stow \
+    tmux \
+    x11-xserver-utils \
+    software-properties-common
+
+# neovim-nightly
+RUN add-apt-repository ppa:neovim-ppa/unstable && \
+    apt-get update && \
+    apt-get install -y \
+        neovim \
+        python3-neovim
+
+WORKDIR /home/${USER}
+USER ${USER}
+
+# fzf
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+    /home/${USER}/.fzf/install --all
+
+# rust
+# https://github.com/rust-lang/rustup/issues/297#issuecomment-444818896
+RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+
+# cargo utils
+RUN /usr/bin/bash --login -c 'cargo install bat fd-find exa'
+
+# fisher (fish shell)
+RUN [ "/usr/bin/fish", "--login", "-c", "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher" ]
+RUN /usr/bin/fish --login -c 'fisher install patrickf1/fzf.fish jethrokuan/z'
+
+# better colors
+ENV TERM xterm-256color
+
+# clone dotfiles
+RUN git clone https://gitlab.com/shank/dotfiles.git 
