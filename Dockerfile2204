@@ -71,3 +71,8 @@ ENV TERM xterm-256color
 
 # clone dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
+
+# stow packages
+RUN cd dotfiles \
+    && rm  $HOME/.config/fish/functions/fish_user_key_bindings.fish \
+    && stow --verbose --no-folding fish neovim tmux bins git
