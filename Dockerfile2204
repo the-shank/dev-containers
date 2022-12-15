@@ -43,6 +43,7 @@ RUN apt-get install -y \
     stow \
     tmux \
     unzip \
+    universal-ctags \
     wget \
     x11-xserver-utils \
     xclip \
