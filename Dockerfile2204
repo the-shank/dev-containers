@@ -22,6 +22,14 @@ RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
 
 RUN echo "${USER}:${PASSWD}" | chpasswd
 
+# locales
+# source: https://serverfault.com/a/801162
+ENV LANG=en_GB.UTF-8
+RUN apt-get install -y locales && \
+  sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen && \
+  dpkg-reconfigure --frontend=noninteractive locales && \
+  update-locale LANG=$LANG
+
 # dev packages
 RUN apt-get install -y \
     apt-utils \
@@ -30,7 +38,6 @@ RUN apt-get install -y \
     clang \
     curl \
     exa \
-    fish \
     flake8 \             
     gcc \
     git \
@@ -50,13 +57,11 @@ RUN apt-get install -y \
     x11-xserver-utils \
     xclip
 
-# locales
-# source: https://serverfault.com/a/801162
-ENV LANG=en_GB.UTF-8
-RUN apt-get install -y locales && \
-  sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen && \
-  dpkg-reconfigure --frontend=noninteractive locales && \
-  update-locale LANG=$LANG
+# fish shell
+RUN add-apt-repository ppa:fish-shell/release-3 && \
+    apt-get update && \
+    apt-get install -y \
+        fish
 
 # neovim-nightly
 RUN add-apt-repository ppa:neovim-ppa/unstable && \
