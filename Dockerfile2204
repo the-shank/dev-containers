@@ -69,6 +69,10 @@ RUN add-apt-repository ppa:neovim-ppa/unstable && \
 WORKDIR /home/${USER}
 USER ${USER}
 
+# nvchad
+RUN rm -rf ~/.config/nvim \
+  && git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+
 # fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
     /home/${USER}/.fzf/install --all
@@ -80,11 +84,11 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 # cargo utils
 RUN /usr/bin/bash --login -c 'cargo install fd-find stylua'
 
-# dotfiles
-RUN git clone https://gitlab.com/shank/dotfiles.git 
-
 # better colors
 ENV TERM xterm-256color
+
+# dotfiles
+RUN git clone https://gitlab.com/shank/dotfiles.git 
 
 # stow packages
 RUN cd dotfiles \
