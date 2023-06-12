@@ -24,6 +24,7 @@ RUN echo "${USER}:${PASSWD}" | chpasswd
 
 # dev packages
 RUN apt-get install -y \
+    apt-utils \
     autoconf \
     black \
     clang \
@@ -48,6 +49,14 @@ RUN apt-get install -y \
     wget \
     x11-xserver-utils \
     xclip
+
+# locales
+# source: https://serverfault.com/a/801162
+ENV LANG=en_GB.UTF-8
+RUN apt-get install -y locales && \
+  sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen && \
+  dpkg-reconfigure --frontend=noninteractive locales && \
+  update-locale LANG=$LANG
 
 # neovim-nightly
 RUN add-apt-repository ppa:neovim-ppa/unstable && \
