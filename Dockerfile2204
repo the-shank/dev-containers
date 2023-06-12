@@ -1,5 +1,5 @@
 # Build:
-# UID=(id -u) GID=(id -g) docker build --no-cache --build-arg PASSWD=<password> -t <image_name> -f <dockerfile> .
+# docker build --no-cache --build-arg PASSWD=<password> --build-arg="UID=(id -u)" --build-arg="GID=(id -g)" -t <image_name> -f Dockerfile2204 .
 #
 # Run:
 # docker run --label no-prune -it --name <container_name> --hostname <hostname> --volume $HOME:/host_home <image_name>
