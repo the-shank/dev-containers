@@ -31,8 +31,8 @@ RUN apt-get install -y locales && \
   update-locale LANG=$LANG
 
 # dev packages
+RUN apt-get install -y apt-utils
 RUN apt-get install -y \
-    apt-utils \
     autoconf \
     bat \
     black \
