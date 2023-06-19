@@ -41,6 +41,8 @@ else
     --name "$container_name" \
     --hostname "$hostname" \
     --volume $HOME:/host_home \
+    --volume $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) \
+    --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
     "$image_name"
 fi
 
