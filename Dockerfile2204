@@ -1,8 +1,8 @@
 # Build:
-# docker build --no-cache --build-arg PASSWD=<password> --build-arg="UID=(id -u)" --build-arg="GID=(id -g)" -t <image_name> -f Dockerfile2204 .
+# ./docker_build.sh
 #
 # Run:
-# docker run --label no-prune -it --name <container_name> --hostname <hostname> --volume $HOME:/host_home <image_name>
+# ./docker_run.sh
 
 FROM ubuntu:22.04
 
@@ -14,7 +14,18 @@ ARG GID=1000
 ENV USER ${USER}
 ENV HOME /home/${USER}
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y sudo 
+# update, upgrade, install sudo
+RUN apt-get update \
+  && apt-get upgrade -y \
+  && apt-get install -y sudo \
+  && apt-get autoremove -y
+
+# apt-utils will be useful
+RUN apt-get install -y apt-utils \
+  && apt-get autoremove -y
+
+# unminimize since this is a dev container
+RUN yes | unminimize
 
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
@@ -25,14 +36,12 @@ RUN echo "${USER}:${PASSWD}" | chpasswd
 # locales
 # source: https://serverfault.com/a/801162
 ENV LANG=en_GB.UTF-8
-RUN apt-get install -y locales && \
-  sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen && \
-  dpkg-reconfigure --frontend=noninteractive locales && \
-  update-locale LANG=$LANG
+RUN apt-get install -y locales \
+  && sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen \
+  && dpkg-reconfigure --frontend=noninteractive locales 
+  && update-locale LANG=$LANG
 
 # dev packages
-RUN apt-get install -y apt-utils \
-  && apt-get autoremove -y
 RUN apt-get install -y \
     apt-file \
     autoconf \
@@ -47,6 +56,7 @@ RUN apt-get install -y \
     git \
     htop \
     make \
+    plocate \
     python-is-python3 \
     python3 \
     python3-neovim \     
@@ -60,7 +70,7 @@ RUN apt-get install -y \
     wget \
     x11-xserver-utils \
     xclip \
-    && apt-get autoremove -y
+  && apt-get autoremove -y
 
 # bat -> batcat
 RUN ln -s /usr/bin/batcat /usr/bin/bat
@@ -68,9 +78,8 @@ RUN ln -s /usr/bin/batcat /usr/bin/bat
 # fish shell
 RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get update && \
-    apt-get install -y \
-        fish \
-        && apt-get autoremove -y
+    apt-get install -y fish && \
+    apt-get autoremove -y
 
 # neovim-nightly
 RUN add-apt-repository ppa:neovim-ppa/unstable && \
@@ -78,7 +87,7 @@ RUN add-apt-repository ppa:neovim-ppa/unstable && \
     apt-get install -y \
         neovim \
         python3-neovim \
-        && apt-get autoremove -y
+    && apt-get autoremove -y
 
 # lazygit
 RUN mkdir -p /tmp \
@@ -138,3 +147,10 @@ RUN source $HOME/.asdf/asdf.fish; asdf install nodejs 18.12.1; asdf global nodej
 # npm - install packages globally to user directory
 RUN source $HOME/.asdf/asdf.fish; npm config set prefix $HOME/.npm-global
 RUN source $HOME/.asdf/asdf.fish; npm install -g prettier neovim
+
+# switch user and update the files database
+USER root
+RUN updatedb
+USER {$USER}
+
+# ================================================================================================
