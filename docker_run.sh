@@ -30,6 +30,8 @@ container_name=$1
 if [[ $2 == "" ]] && [[ $3 == "" ]]; then
   # re-running existing container
   # TODO
+  echo "[!] re-running existing container not yet implemented"
+  exit 1
   
 else
   hostname=$2
