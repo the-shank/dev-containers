@@ -11,8 +11,8 @@ image_name="$2"
 docker build \
   --no-cache \
   --build-arg PASSWD="${pass}" \
-  --build-arg="UID=(id -u)" \
-  --build-arg="GID=(id -g)" \
+  --build-arg="UID=$(id -u)" \
+  --build-arg="GID=$(id -g)" \
   -t "${image_name}" \
   -f Dockerfile2204 \
   .
