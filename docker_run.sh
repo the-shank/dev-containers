@@ -31,20 +31,23 @@ ensure_not_empty() {
   fi
 }
 
-if [[ $1 == "" ]]; then
-  usage
-  exit 1
-fi
-
 container_name=$1
 
-if [[ $2 == "" ]] && [[ $3 == "" ]]; then
+if [[ $1 == "" ]] || ( [[ $2 == "" ]] && [[ $3 == "" ]] ); then
   # re-running existing container
-  # TODO
-  echo "[!] re-running existing container not yet implemented"
-  exit 1
+  if [[ ${container_name} == "" ]]; then
+    container_name_from_file=$(cat .container_name)
+    if [[ ${container_name_from_file} == "" ]]; then
+      echo "[!] no container_name provided and ./.container_name is also empty. Please provide a container name"
+      exit 1
+    fi
+    container_name=${container_name_from_file}
+  fi
+
+  docker start -i ${container_name}
   
 else
+  # creating new container
   hostname=$2
   image_name=$3
   if [[ $image_name == "" ]]; then
@@ -68,4 +71,3 @@ else
     --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
     "$image_name"
 fi
-
