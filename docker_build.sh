@@ -16,3 +16,6 @@ docker build \
   -t "${image_name}" \
   -f Dockerfile2204 \
   .
+
+# save the image name for future usage
+echo "${image_name}" > ./.image_name
