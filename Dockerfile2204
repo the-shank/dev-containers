@@ -157,3 +157,35 @@ RUN updatedb
 USER {$USER}
 
 # ================================================================================================
+
+# rust for embedded
+
+# switch to root user
+USER root
+
+# packages
+RUN apt-get -y install \
+  bear \
+  build-essential \
+  clang \
+  cmake \
+  gcc-multilib g++-multilib \
+  git \
+  libc6-dev-i386 \
+  libclang-dev \
+  libnewlib-dev \
+  libssl-dev \
+  llvm \
+  pkg-config \
+  python3 \
+  && apt-get autoremove -y
+
+# toolchains/compilers
+RUN apt-get -y install gcc-arm-none-eabi \
+  && apt-get autoremove -y
+
+# switch back to normal user
+USER ${USER}
+
+# c2rust
+RUN /usr/bin/bash --login -c 'cargo install c2rust'
