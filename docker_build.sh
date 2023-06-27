@@ -14,5 +14,5 @@ docker build \
   --build-arg="UID=(id -u)" \
   --build-arg="GID=(id -g)" \
   -t "${image_name}" \
-  -f Dockerfile2204
+  -f Dockerfile2204 \
   .
