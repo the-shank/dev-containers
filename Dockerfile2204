@@ -56,6 +56,7 @@ RUN apt-get install -y \
     g++ \
     git \
     htop \
+    lld \
     make \
     plocate \
     python-is-python3 \
