@@ -191,6 +191,10 @@ RUN apt-get -y install gcc-arm-none-eabi \
 RUN apt-get -y install device-tree-compiler \
   && apt-get autoremove -y
 
+# RT-thread
+RUN apt-get -y install scons \
+  && apt-get autoremove -y
+
 # switch back to normal user
 USER ${USER}
 
