@@ -58,6 +58,7 @@ RUN apt-get install -y \
     htop \
     lld \
     make \
+    ninja-build \
     plocate \
     python-is-python3 \
     python3 \
