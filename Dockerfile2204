@@ -186,6 +186,10 @@ RUN apt-get -y install \
 RUN apt-get -y install gcc-arm-none-eabi \
   && apt-get autoremove -y
 
+# zephyr
+RUN apt-get -y install device-tree-compiler \
+  && apt-get autoremove -y
+
 # switch back to normal user
 USER ${USER}
 
