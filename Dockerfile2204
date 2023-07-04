@@ -59,6 +59,7 @@ RUN apt-get install -y \
     lld \
     make \
     ninja-build \
+    openssh-server \
     plocate \
     python-is-python3 \
     python3 \
@@ -76,6 +77,7 @@ RUN apt-get install -y \
     wget \
     x11-xserver-utils \
     xclip \
+    xsel \
   && apt-get autoremove -y
 
 # bat -> batcat
@@ -102,6 +104,16 @@ RUN mkdir -p /tmp \
   && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
   && tar xf lazygit.tar.gz lazygit \
   && install lazygit /usr/local/bin
+
+# ssh server (so that we can use X11 forwarding for clipboard integration)
+RUN sed -i \
+  -e 's/#Port 22/Port 22/' \
+  -e 's/#PasswordAuthentication .*/PasswordAuthentication yes/' \
+  -e 's/#X11UseLocalhost .*/X11UseLocalhost no/' \
+  /etc/ssh/sshd_config \
+  && service ssh start
+
+EXPOSE 22
 
 # change to $USER directory
 WORKDIR /home/${USER}
@@ -157,7 +169,7 @@ RUN source $HOME/.asdf/asdf.fish; npm install -g prettier neovim
 # switch user and update the files database
 USER root
 RUN updatedb
-USER {$USER}
+USER ${USER}
 
 # ================================================================================================
 
