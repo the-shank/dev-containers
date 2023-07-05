@@ -51,7 +51,7 @@ if [[ $1 == "" ]]; then
   
 else
   # creating new container
-  hostname="$container_name"
+  hostname="${container_name}"
 
   image_name=$2
   if [[ $image_name == "" ]]; then
@@ -65,26 +65,14 @@ else
 
   echo "${container_name}" > ./.container_name
 
-  # docker run \
-  #   --label no-prune \
-  #   -it \
-  #   --name "$container_name" \
-  #   --hostname "$hostname" \
-  #   --volume /tmp/.X11-unix:/tmp/.X11-unix \
-  #   --volume $HOME:/host_home \
-  #   --volume $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) \
-  #   --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
-  #   -env DISPLAY=$DISPLAY \
-  #   "${@:3}" \
-  #   "$image_name"
   docker run \
     --label no-prune \
     -it \
-    --name "$container_name" \
-    --hostname "$hostname" \
+    --name "${container_name}" \
+    --hostname "${hostname}" \
+    --volume /tmp/.X11-unix:/tmp/.X11-unix \
     --volume $HOME:/host_home \
     --env DISPLAY=$DISPLAY \
-    --publish 127.0.0.1:8822:22 \
     "${@:3}" \
     "$image_name"
 fi
