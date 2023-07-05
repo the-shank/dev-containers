@@ -65,6 +65,9 @@ RUN xbps-install --sync -y \
 RUN sed -i -e 's/#en_US.UTF-8/en_US.UTF_8/' /etc/default/libc-locales
 RUN xbps-reconfigure --force glibc-locales
 
+# timezone
+RUN ln -sf /usr/share/zoneinfo/America/Indiana/Indianapolis /etc/localtime
+
 # create user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash
 RUN echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
