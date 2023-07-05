@@ -109,7 +109,7 @@ USER root
 # packages
 RUN xbps-install --sync -y \
   Bear \
-  llvm \
+  llvm
 
 # toolchains/compilers
 RUN xbps-install --sync -y \
@@ -126,5 +126,9 @@ RUN xbps-install --sync -y \
 # switch back to normal user
 USER ${USER}
 
+# rust
+RUN echo "1" | rustup-init
+RUN stow --verbose --no-folding cargo
+
 # c2rust
-RUN /usr/bin/bash --login -c 'cargo install c2rust'
+RUN /usr/bin/fish --login -c "cargo install c2rust"
