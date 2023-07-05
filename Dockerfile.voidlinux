@@ -128,7 +128,7 @@ USER ${USER}
 
 # rust
 RUN echo "1" | rustup-init
-RUN stow --verbose --no-folding cargo
+RUN cd ${HOME}/dotfiles && stow --verbose --no-folding cargo
 
 # c2rust
-RUN /usr/bin/fish --login -c "cargo install c2rust"
+# RUN cargo install c2rust
