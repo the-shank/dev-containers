@@ -102,7 +102,6 @@ RUN fisher install patrickf1/fzf.fish jethrokuan/z
 
 # rust for embedded
 
-
 # switch to root user
 USER root
 
@@ -125,10 +124,11 @@ RUN xbps-install --sync -y \
 
 # switch back to normal user
 USER ${USER}
+SHELL ["/usr/bin/fish", "--login", "-c"]
 
 # rust
 RUN echo "1" | rustup-init
-RUN cd ${HOME}/dotfiles && stow --verbose --no-folding cargo
+RUN cd ~/dotfiles && stow --verbose --no-folding -R cargo
 
 # c2rust
-# RUN cargo install c2rust
+RUN ~/.cargo/bin/cargo install c2rust
