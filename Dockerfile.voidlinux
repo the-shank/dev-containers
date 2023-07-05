@@ -45,6 +45,7 @@ RUN xbps-install --sync -y \
   ncurses \
   neovim \
   nodejs \
+  openssh \
   pkg-config \
   python3-neovim \
   ripgrep \
@@ -66,7 +67,7 @@ RUN xbps-reconfigure --force glibc-locales
 
 # create user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash
-RUN echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
 RUN echo "${PASSWD}\n${PASSWD}" | passwd ${USER}
 
 # change users default shell

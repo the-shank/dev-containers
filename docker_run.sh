@@ -72,6 +72,7 @@ else
     --hostname "${hostname}" \
     --volume /tmp/.X11-unix:/tmp/.X11-unix \
     --volume $HOME:/host_home \
+    --volume $HOME/.ssh:/home/shank/.ssh \
     --env DISPLAY=$DISPLAY \
     "${@:3}" \
     "$image_name"

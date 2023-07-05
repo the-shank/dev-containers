@@ -29,9 +29,12 @@ RUN yes | unminimize
 
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
-    echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
 
 RUN echo "${USER}:${PASSWD}" | chpasswd
+
+# change users default shell
+RUN chsh ${USER} --shell /usr/bin/fish
 
 # locales
 # source: https://serverfault.com/a/801162
@@ -171,7 +174,7 @@ USER root
 RUN updatedb
 USER ${USER}
 
-# ================================================================================================
+#===================================================
 
 # rust for embedded
 
