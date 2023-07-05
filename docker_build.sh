@@ -12,7 +12,7 @@ pass="$1"
 image_name="$2"
 
 docker build \
-  $3 \
+  ${@:3} \
   --build-arg PASSWD="${pass}" \
   --build-arg="UID=$(id -u)" \
   --build-arg="GID=$(id -g)" \
