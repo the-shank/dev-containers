@@ -45,6 +45,7 @@ RUN xbps-install --sync -y \
   ncurses \
   neovim \
   nodejs \
+  openssh \
   pkg-config \
   python3-neovim \
   ripgrep \
