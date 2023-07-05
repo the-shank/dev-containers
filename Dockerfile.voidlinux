@@ -98,3 +98,32 @@ RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fishe
 RUN fisher install patrickf1/fzf.fish jethrokuan/z
 
 #===================================================
+
+# rust for embedded
+
+
+# switch to root user
+USER root
+
+# packages
+RUN xbps-install --sync -y \
+  Bear \
+  llvm \
+
+# toolchains/compilers
+RUN xbps-install --sync -y \
+  cross-arm-none-eabi-gcc
+
+# zephyr
+RUN xbps-install --sync -y \
+  dtc
+
+# RT-thread
+RUN xbps-install --sync -y \
+  scons
+
+# switch back to normal user
+USER ${USER}
+
+# c2rust
+RUN /usr/bin/bash --login -c 'cargo install c2rust'
