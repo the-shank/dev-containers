@@ -17,6 +17,12 @@ RUN xbps-install --sync --update
 # base utils
 RUN xbps-install --sync -y xtools
 
+# enable repositories
+RUN xbps-install --sync -y \
+  void-repo-debug \
+  void-repo-multilib \
+  void-repo-nonfree
+
 # dev utils
 RUN xbps-install --sync -y \
   StyLua \
@@ -38,6 +44,7 @@ RUN xbps-install --sync -y \
   ncurses \
   neovim \
   nodejs \
+  pkg-config \
   python3-neovim \
   ripgrep \
   rustup \
@@ -89,3 +96,5 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 RUN fisher install patrickf1/fzf.fish jethrokuan/z
+
+#===================================================
