@@ -48,6 +48,7 @@ RUN xbps-install --sync -y \
   openssh \
   pkg-config \
   python3-neovim \
+  python3-pip \
   ripgrep \
   rustup \
   sd \
