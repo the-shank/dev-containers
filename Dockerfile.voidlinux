@@ -87,7 +87,9 @@ RUN rm -rf ~/.config/nvim \
   && git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
 # dotfiles
-RUN git clone https://gitlab.com/shank/dotfiles.git 
+RUN git clone https://gitlab.com/shank/dotfiles.git \
+  && cd dotfiles \
+  && git remote set-url origin git@gitlab.com:shank/dotfiles.git
 
 # stow packages
 RUN cd dotfiles \
