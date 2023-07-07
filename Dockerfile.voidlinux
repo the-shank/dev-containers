@@ -39,6 +39,7 @@ RUN xbps-install --sync -y \
   fzf \
   helix \
   htop \
+  jq \
   lazygit \
   lld \
   man-db \
