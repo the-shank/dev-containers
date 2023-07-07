@@ -104,4 +104,7 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 RUN fisher install patrickf1/fzf.fish jethrokuan/z
 
+# rust
+RUN echo "1" | rustup-init
+
 #===================================================
