@@ -39,15 +39,18 @@ RUN xbps-install --sync -y \
   fzf \
   helix \
   htop \
+  jq \
   lazygit \
   lld \
   man-db \
   ncurses \
+  neofetch \
   neovim \
   nodejs \
   openssh \
   pkg-config \
   python3-neovim \
+  python3-pip \
   ripgrep \
   rustup \
   sd \
@@ -64,6 +67,9 @@ RUN xbps-install --sync -y \
 # locale
 RUN sed -i -e 's/#en_US.UTF-8/en_US.UTF_8/' /etc/default/libc-locales
 RUN xbps-reconfigure --force glibc-locales
+
+# timezone
+RUN ln -sf /usr/share/zoneinfo/America/Indiana/Indianapolis /etc/localtime
 
 # create user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash
@@ -82,7 +88,9 @@ RUN rm -rf ~/.config/nvim \
   && git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
 
 # dotfiles
-RUN git clone https://gitlab.com/shank/dotfiles.git 
+RUN git clone https://gitlab.com/shank/dotfiles.git \
+  && cd dotfiles \
+  && git remote set-url origin git@gitlab.com:shank/dotfiles.git
 
 # stow packages
 RUN cd dotfiles \
@@ -98,6 +106,10 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 RUN fisher install patrickf1/fzf.fish jethrokuan/z
+
+# rust
+RUN echo "1" | rustup-init
+RUN mkdir ~/.cargo-target
 
 #===================================================
 
