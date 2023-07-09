@@ -1,7 +1,7 @@
 services:
-  afl-for-solidity:
+  <##afl-for-solidity##>:
     build: .
-    hostname: devc_solidity
+    hostname: <##devc_solidity##>
     tty: true
     stdin_open: true
     volumes:
@@ -11,5 +11,3 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       DISPLAY:
-    labels:
-      no-prune:
