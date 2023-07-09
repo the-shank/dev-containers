@@ -15,8 +15,15 @@ usage() {
   echo "build_baseimg.sh <password> <image_name> <dockerfile> [<other-args for docker build>]"
 }
 
+notes() {
+  echo "NOTES:"
+  echo "\$4 can be used to pass in '--no-cache' to create the image from scratch"
+}
+
 if [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; then
   usage
+  echo ""
+  notes
   exit 0
 fi
 

@@ -9,11 +9,17 @@
 
 usage(){
   echo "Usage: "
-  echo "docker_run.sh <container_name> <image_name> [<other_args>..]"
+  echo "build_container.sh <container_name> <image_name> [<other_args>..]"
 }
+
+# notes() {
+#
+# }
 
 if [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; then
   usage
+  # echo ""
+  # notes
   exit 0
 fi
 
