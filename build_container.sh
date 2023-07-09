@@ -3,7 +3,7 @@
 # =============================================================
 #
 # Usage:
-# build_container.sh <container_name> <hostname> <image_name>
+# build_container.sh <container_name> <image_name>
 #
 # =============================================================
 
