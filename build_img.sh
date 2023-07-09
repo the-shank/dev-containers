@@ -3,7 +3,7 @@
 # =============================================================
 #
 # Usage:
-# build_img.sh <project_img_name> [<other-args for docker build>]
+# build_img.sh <project_image_name> [<other-args for docker build>]
 #
 # =============================================================
 #
@@ -12,7 +12,7 @@
 
 usage() {
   echo "Usage:"
-  echo "build_img.sh <project_img_name> [<other-args for docker build>]"
+  echo "build_img.sh <project_image_name> [<other-args for docker build>]"
 }
 
 notes() {
@@ -27,14 +27,14 @@ if [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; then
   exit 0
 fi
 
-project_img_name="$1"
+project_image_name="$1"
 
-if [[ $image_name == "" ]]; then
-  echo "[!] image_name cannot be empty"
+if [[ $project_image_name == "" ]]; then
+  echo "[!] project_image_name cannot be empty"
   usage
   exit 1
 fi
 
 docker build \
   "${@:2}" \
-  -t "${project_img_name}" .
+  -t "${project_image_name}" .
