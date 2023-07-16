@@ -115,4 +115,7 @@ RUN mkdir ~/.cargo-target
 # python packages
 RUN pip install bpython
 
+# TODO: change fish prompt
+# TODO: setup justfile
+
 #===================================================
