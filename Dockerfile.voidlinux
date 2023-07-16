@@ -111,4 +111,7 @@ RUN fisher install patrickf1/fzf.fish jethrokuan/z
 RUN echo "1" | rustup-init
 RUN mkdir ~/.cargo-target
 
+# python packages
+RUN pip install bpython
+
 #===================================================
