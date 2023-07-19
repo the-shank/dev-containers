@@ -1,4 +1,4 @@
-default:
+_default:
     just --list
 
 build-baseimg pass image_name dockerfile *args:
