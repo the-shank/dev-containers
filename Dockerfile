@@ -3,7 +3,6 @@
 FROM devvoid:latest
 
 # install additional packages
-#===================================================
 
 # rust for embedded
 

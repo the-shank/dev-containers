@@ -40,6 +40,7 @@ RUN xbps-install --sync -y \
   helix \
   htop \
   jq \
+  just \
   lazygit \
   lld \
   man-db \
@@ -81,6 +82,8 @@ RUN chsh ${USER} --shell /usr/bin/fish
 
 # change to $USER directory
 WORKDIR /home/${USER}
+
+# Switch user
 USER ${USER}
 
 # nvchad
@@ -110,3 +113,8 @@ RUN fisher install patrickf1/fzf.fish jethrokuan/z
 # rust
 RUN echo "1" | rustup-init
 RUN mkdir ~/.cargo-target
+
+# python packages
+RUN pip install bpython
+
+# TODO: change fish prompt
