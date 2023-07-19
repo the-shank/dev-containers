@@ -9,3 +9,9 @@ build-baseimg pass image_name dockerfile *args:
       --build-arg="GID=$(id -g)" \
       -t {{ image_name }} \
       -f "{{ dockerfile }}" .
+
+build-img: (build-baseimg "pass" "devvoid" "Dockerfile.voidlinux")
+    @echo ">> TODO: implement this"
+
+build-container:
+    @echo ">> TODO: implement this"
