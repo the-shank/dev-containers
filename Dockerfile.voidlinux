@@ -77,6 +77,10 @@ RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash
 RUN echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
 RUN echo "${PASSWD}\n${PASSWD}" | passwd ${USER}
 
+# fish prompt
+RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
+RUN sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
+
 # change users default shell
 RUN chsh ${USER} --shell /usr/bin/fish
 
@@ -114,5 +118,3 @@ RUN mkdir ~/.cargo-target
 
 # python packages
 RUN pip install bpython
-
-# TODO: change fish prompt
