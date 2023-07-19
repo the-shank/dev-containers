@@ -118,3 +118,6 @@ RUN mkdir ~/.cargo-target
 
 # python packages
 RUN pip install bpython
+
+# start fish shell
+ENTRYPOINT ["fish"]
