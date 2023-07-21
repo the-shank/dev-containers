@@ -35,6 +35,7 @@ RUN xbps-install --sync -y \
   cmake \
   exa \
   fd \
+  file \
   fish-shell \
   fzf \
   helix \
