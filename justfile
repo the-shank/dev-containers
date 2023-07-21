@@ -10,12 +10,18 @@ build-baseimg pass image_name dockerfile *args:
       -t {{ image_name }} \
       -f "{{ dockerfile }}" .
 
-build-img project_image_name *args: (build-baseimg "pass" "devvoid" "Dockerfile.voidlinux")
+_build-img project_image_name *args:
     docker build \
       {{ args }}\
       -t {{ project_image_name }} .
 
-build-container container_name image_name *args: (build-img image_name)
+build-img-void project_image_name *args: (build-baseimg "pass" "devvoid" "Dockerfile.voidlinux")
+    just _build-img {{ project_image_name }} {{ args }}
+
+build-img-ubuntu2204 project_image_name *args: (build-baseimg "pass" "dev2204" "Dockerfile.ubuntu2204")
+    just _build-img {{ project_image_name }} {{ args }}
+
+_build-container container_name image_name *args:
     docker run \
       --label no-prune \
       -it \
@@ -28,3 +34,9 @@ build-container container_name image_name *args: (build-img image_name)
       --env DISPLAY=$DISPLAY \
       {{ args }} \
       {{ image_name }}
+
+build-container-void container_name image_name *args: (build-img-void image_name)
+    just _build-container {{ container_name }} {{ image_name }} {{ args }}
+
+build-container-ubuntu2204 container_name image_name *args: (build-img-ubuntu2204 image_name)
+    just _build-container {{ container_name }} {{ image_name }} {{ args }}
