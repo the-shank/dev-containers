@@ -1,9 +1,3 @@
-# Build:
-# ./docker_build.sh
-#
-# Run:
-# ./docker_run.sh
-
 FROM ubuntu:22.04
 
 ARG USER=shank
@@ -13,6 +7,9 @@ ARG GID=1000
 
 ENV USER ${USER}
 ENV HOME /home/${USER}
+
+# better colors
+ENV TERM xterm-256color
 
 # update, upgrade, install sudo
 RUN apt-get update \
@@ -26,15 +23,6 @@ RUN apt-get install -y apt-utils \
 
 # unminimize since this is a dev container
 RUN yes | unminimize
-
-RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
-    echo "${USER}:${PASSWD}" | chpasswd && \
-    echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
-
-RUN echo "${USER}:${PASSWD}" | chpasswd
-
-# change users default shell
-RUN chsh ${USER} --shell /usr/bin/fish
 
 # locales
 # source: https://serverfault.com/a/801162
@@ -52,22 +40,21 @@ RUN apt-get install -y \
     black \
     clang \
     clang-format \
+    cmake \
     curl \
     exa \
-    flake8 \             
     gcc \
     g++ \
     git \
     htop \
     lld \
     make \
-    ninja-build \
-    openssh-server \
+    neofetch \
     plocate \
     python-is-python3 \
     python3 \
-    python3-neovim \     
     python3-pip \
+    python3-neovim \
     python3-venv \
     ranger \
     ripgrep \
@@ -78,10 +65,10 @@ RUN apt-get install -y \
     unzip \
     universal-ctags \
     wget \
-    x11-xserver-utils \
     xclip \
     xsel \
   && apt-get autoremove -y
+    # x11-xserver-utils \
 
 # bat -> batcat
 RUN ln -s /usr/bin/batcat /usr/bin/bat
@@ -108,19 +95,22 @@ RUN mkdir -p /tmp \
   && tar xf lazygit.tar.gz lazygit \
   && install lazygit /usr/local/bin
 
-# ssh server (so that we can use X11 forwarding for clipboard integration)
-RUN sed -i \
-  -e 's/#Port 22/Port 22/' \
-  -e 's/#PasswordAuthentication .*/PasswordAuthentication yes/' \
-  -e 's/#X11UseLocalhost .*/X11UseLocalhost no/' \
-  /etc/ssh/sshd_config \
-  && service ssh start
+# crate user
+RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
+    echo "${USER}:${PASSWD}" | chpasswd && \
+    echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
+RUN echo "${USER}:${PASSWD}" | chpasswd
+RUN chown -R ${USER} /home/${USER}
 
-EXPOSE 22
+# change users default shell
+RUN chsh ${USER} --shell /usr/bin/fish
 
 # change to $USER directory
 WORKDIR /home/${USER}
 USER ${USER}
+
+# tmp 
+RUN whoami
 
 # nvchad
 RUN rm -rf ~/.config/nvim \
@@ -133,19 +123,17 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
 # rust
 # https://github.com/rust-lang/rustup/issues/297#issuecomment-444818896
 RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+RUN mkdir ~/.cargo-target
 
 # cargo utils
 RUN /usr/bin/bash --login -c 'cargo install fd-find stylua sd'
-
-# better colors
-ENV TERM xterm-256color
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
 
 # stow packages
 RUN cd dotfiles \
-    && rm -f $HOME/.config/fish/functions/fish_user_key_bindings.fish \
+    && rm --force ${HOME}/.config/fish/functions/fish_user_key_bindings.fish \
     && stow --verbose --no-folding fish neovim tmux bins git
 
 # tmux plugin manager
@@ -153,6 +141,12 @@ RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
 # asdf-vm
 RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
+
+# fish prompt
+USER root
+RUN /home/${USER}/.cargo/bin/sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
+RUN /home/${USER}/.cargo/bin/sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
+USER ${USER}
 
 # change the shell for the rest of the commands commands
 SHELL ["/usr/bin/fish", "--login", "-c"]
@@ -169,9 +163,8 @@ RUN source $HOME/.asdf/asdf.fish; asdf install nodejs 18.12.1; asdf global nodej
 RUN source $HOME/.asdf/asdf.fish; npm config set prefix $HOME/.npm-global
 RUN source $HOME/.asdf/asdf.fish; npm install -g prettier neovim
 
-# switch user and update the files database
-USER root
-RUN updatedb
-USER ${USER}
+# python packages
+RUN pip install bpython
 
-#===================================================
+# start fish shell
+ENTRYPOINT ["fish"]
