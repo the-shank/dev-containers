@@ -126,7 +126,7 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 RUN mkdir ~/.cargo-target
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install fd-find stylua sd'
+RUN /usr/bin/bash --login -c 'cargo install fd-find stylua sd tealdeer'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
