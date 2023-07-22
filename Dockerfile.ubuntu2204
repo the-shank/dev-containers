@@ -26,7 +26,7 @@ RUN yes | unminimize
 
 # locales
 # source: https://serverfault.com/a/801162
-ENV LANG=en_GB.UTF-8
+ENV LANG=en_US.UTF-8
 RUN apt-get install -y locales \
   && sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen \
   && dpkg-reconfigure --frontend=noninteractive locales \
@@ -56,7 +56,6 @@ RUN apt-get install -y \
     python3-pip \
     python3-neovim \
     python3-venv \
-    ranger \
     ripgrep \
     software-properties-common \
     stow \
@@ -108,9 +107,6 @@ RUN chsh ${USER} --shell /usr/bin/fish
 # change to $USER directory
 WORKDIR /home/${USER}
 USER ${USER}
-
-# tmp 
-RUN whoami
 
 # nvchad
 RUN rm -rf ~/.config/nvim \
