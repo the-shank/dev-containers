@@ -44,13 +44,15 @@ RUN apt-get install -y \
     curl \
     exa \
     file \
-    gcc \
     g++ \
+    gcc \
+    gettext \
     git \
     htop \
     lld \
     make \
     neofetch \
+    ninja-build \
     plocate \
     python-is-python3 \
     python3 \
@@ -71,6 +73,9 @@ RUN apt-get install -y \
 # bat -> batcat
 RUN ln -s /usr/bin/batcat /usr/bin/bat
 
+# fd -> fdfind
+RUN ln -s /usr/bin/fdfind /usr/bin/fd
+
 # fish shell
 RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get update && \
@@ -78,13 +83,11 @@ RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get autoremove -y
 
 # neovim
-ARG NVIM_RELEASE=0.9
-RUN apt-get install -y ninja-build gettext \
-  && cd /tmp \
-  && git clone https://github.com/neovim/neovim \
-  && cd neovim \
-  && git checkout release-${NVIM_RELEASE} \
-  && make CMAKE_BUILD_TYPE=RelWithDebInfo \
+RUN cd /tmp \
+  && wget -c https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz --output-document neovim.tar.gz \
+  && tar xf neovim.tar.gz \
+  && cd neovim-stable \
+  && make CMAKE_BUILD_TYPE=RelWithDebInfo -j$(nproc) \
   && cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb \
   && cd /tmp && rm -rf neovim \
   && apt-get install -y python3-neovim
@@ -125,7 +128,7 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 RUN mkdir ~/.cargo-target
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install fd-find stylua sd tealdeer'
+RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
