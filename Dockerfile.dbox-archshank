@@ -1,0 +1,60 @@
+FROM quay.io/toolbx-images/archlinux-toolbox
+
+# update
+RUN pacman -Syu --noconfirm
+
+# init keyring
+RUN pacman-key --init
+
+# locale
+RUN sed -i -e 's/#en_US.UTF-8. UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+  && locale-gen \
+  && sed -i -e 's/LANG=.*/LANG=en_US.UTF-8/' /etc/locale.conf
+
+# add arcolinux repositories and keys
+RUN pacman -S --noconfirm wget
+RUN wget bit.ly/get-arcolinux-keys && chmod +x ./get-arcolinux-keys && sudo ./get-arcolinux-keys
+
+# update again
+RUN pacman -Syu --noconfirm
+
+# remove mlocate -- to be replaced with plocate below
+RUN pacman -R --noconfirm mlocate
+
+# packages
+RUN pacman -Sy --noconfirm \
+  paru \
+  clang \
+  lld \
+  bat \
+  fish \
+  neovim \
+  exa \
+  htop \
+  lazygit \
+  tmux \
+  bat \
+  fd \
+  ripgrep \
+  sd \
+  neovim \
+  python \
+  arcolinux-system-config-git \
+  python-black \
+  python-pip \
+  fzf \
+  jq \
+  lf \
+  neofetch \
+  man-pages \
+  python-neovim \
+  plocate \
+  tealdeer \
+  xclip \
+  xsel \
+  rustup \
+  helix
+
+# fish prompt
+RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
+RUN sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
