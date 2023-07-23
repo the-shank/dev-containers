@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM quay.io/toolbx-images/ubuntu-toolbox:22.04
 
 # update, upgrade, install sudo
 RUN apt-get update \
@@ -67,13 +67,16 @@ RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get install -y fish && \
     apt-get autoremove -y
 
-# neovim-nightly
-RUN add-apt-repository ppa:neovim-ppa/unstable && \
-    apt-get update && \
-    apt-get install -y \
-        neovim \
-        python3-neovim \
-    && apt-get autoremove -y
+# neovim
+ARG NVIM_RELEASE=0.9
+RUN apt-get install -y ninja-build gettext \
+  && cd /tmp \
+  && git clone https://github.com/neovim/neovim \
+  && cd neovim \
+  && git checkout release-${NVIM_RELEASE} \
+  && make CMAKE_BUILD_TYPE=RelWithDebInfo \
+  && cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb \
+  && cd /tmp && rm -rf neovim
 
 # lazygit
 RUN mkdir -p /tmp \
