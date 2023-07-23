@@ -23,37 +23,39 @@ RUN pacman -R --noconfirm mlocate
 
 # packages
 RUN pacman -Sy --noconfirm \
-  paru \
-  clang \
-  lld \
-  bat \
-  fish \
-  neovim \
-  exa \
-  htop \
-  lazygit \
-  tmux \
-  bat \
-  fd \
-  ripgrep \
-  sd \
-  neovim \
-  python \
   arcolinux-system-config-git \
-  python-black \
-  python-pip \
+  bat \
+  bat \
+  clang \
+  docker \
+  exa \
+  expac \
+  fd \
+  fish \
   fzf \
+  helix \
+  htop \
   jq \
+  lazygit \
   lf \
-  neofetch \
+  lld \
   man-pages \
-  python-neovim \
+  neofetch \
+  neovim \
+  neovim \
+  paru \
   plocate \
-  tealdeer \
-  xclip \
-  xsel \
+  python \
+  python-black \
+  python-neovim \
+  python-pip \
+  ripgrep \
   rustup \
-  helix
+  sd \
+  tealdeer \
+  tmux \
+  xclip \
+  xsel
 
 # fish prompt
 RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
