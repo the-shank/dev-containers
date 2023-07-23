@@ -1,0 +1,84 @@
+FROM ubuntu:22.04
+
+# update, upgrade, install sudo
+RUN apt-get update \
+  && apt-get upgrade -y \
+  && apt-get install -y sudo \
+  && apt-get autoremove -y
+
+# apt-utils will be useful
+RUN apt-get install -y apt-utils \
+  && apt-get autoremove -y
+
+# unminimize since this is a dev container
+RUN yes | unminimize
+
+# locales
+# source: https://serverfault.com/a/801162
+ENV LANG=en_US.UTF-8
+RUN apt-get install -y locales \
+  && sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen \
+  && dpkg-reconfigure --frontend=noninteractive locales \
+  && update-locale LANG=$LANG
+
+# dev packages
+RUN apt-get install -y \
+    apt-file \
+    autoconf \
+    bat \
+    black \
+    clang \
+    clang-format \
+    cmake \
+    curl \
+    exa \
+    file \
+    gcc \
+    g++ \
+    git \
+    htop \
+    lld \
+    make \
+    neofetch \
+    plocate \
+    python-is-python3 \
+    python3 \
+    python3-pip \
+    python3-neovim \
+    python3-venv \
+    ripgrep \
+    software-properties-common \
+    stow \
+    tmux \
+    tree \
+    unzip \
+    universal-ctags \
+    wget \
+    xclip \
+    xsel \
+  && apt-get autoremove -y
+
+# bat -> batcat
+RUN ln -s /usr/bin/batcat /usr/bin/bat
+
+# fish shell
+RUN add-apt-repository ppa:fish-shell/release-3 && \
+    apt-get update && \
+    apt-get install -y fish && \
+    apt-get autoremove -y
+
+# neovim-nightly
+RUN add-apt-repository ppa:neovim-ppa/unstable && \
+    apt-get update && \
+    apt-get install -y \
+        neovim \
+        python3-neovim \
+    && apt-get autoremove -y
+
+# lazygit
+RUN mkdir -p /tmp \
+  && cd /tmp \
+  && LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
+  && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
+  && tar xf lazygit.tar.gz lazygit \
+  && install lazygit /usr/local/bin

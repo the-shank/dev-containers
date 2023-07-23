@@ -43,6 +43,7 @@ RUN apt-get install -y \
     cmake \
     curl \
     exa \
+    file \
     gcc \
     g++ \
     git \
@@ -67,7 +68,6 @@ RUN apt-get install -y \
     xclip \
     xsel \
   && apt-get autoremove -y
-    # x11-xserver-utils \
 
 # bat -> batcat
 RUN ln -s /usr/bin/batcat /usr/bin/bat
