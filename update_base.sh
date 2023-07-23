@@ -11,10 +11,10 @@ BASE_IMAGENAME=archshank
 dbox_base="dbox-${BASE}-base"
 
 # stop any running instance
-distrobox stop $dbox_base
+! distrobox stop $dbox_base
 
 # remove the dbox
-distrobox rm $dbox_base
+! distrobox rm $dbox_base
 
 # build new base image
 docker image build --tag ${BASE_IMAGENAME} --file ${BASE_DOCKERFILE} .
