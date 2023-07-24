@@ -46,6 +46,8 @@ RUN pacman -Sy --noconfirm \
   pacman-contrib \
   paru \
   plocate \
+  prettier \
+  procs \
   python \
   python-black \
   python-neovim \
