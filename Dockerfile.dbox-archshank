@@ -23,6 +23,9 @@ RUN pacman -Sy --noconfirm arcolinux-system-config-git
 RUN /usr/local/bin/arcolinux-fix-pacman-conf
 RUN /usr/local/bin/arcolinux-fix-pacman-databases-and-keys
 
+# TODO: fix manpages
+# update all packages except: tzdata
+
 # remove mlocate -- to be replaced with plocate below
 RUN pacman -R --noconfirm mlocate
 
@@ -41,6 +44,7 @@ RUN pacman -Sy --noconfirm \
   helix \
   htop \
   jq \
+  just \
   lazygit \
   lf \
   lld \
