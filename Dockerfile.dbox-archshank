@@ -23,8 +23,16 @@ RUN pacman -Sy --noconfirm arcolinux-system-config-git
 RUN /usr/local/bin/arcolinux-fix-pacman-conf
 RUN /usr/local/bin/arcolinux-fix-pacman-databases-and-keys
 
-# TODO: fix manpages
-# update all packages except: tzdata
+# fix manpages
+# update all packages except: tzdata, filesystem
+RUN pacman -Qk 2>&1 \
+  | grep warning: \
+  | awk '{print $2}' \
+  | sort -u \
+  | sed -e 's/://' \
+  | grep --invert-match --extended-regexp "tzdata|filesystem" \
+  | grep --invert-match --extended-regexp "^[0-9]+$" \
+  | xargs pacman -Sy --noconfirm
 
 # remove mlocate -- to be replaced with plocate below
 RUN pacman -R --noconfirm mlocate
@@ -32,6 +40,7 @@ RUN pacman -R --noconfirm mlocate
 # packages
 RUN pacman -Sy --noconfirm \
   bat \
+  bfs \
   clang \
   cmake \
   direnv \
