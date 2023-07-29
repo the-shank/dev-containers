@@ -17,7 +17,7 @@ dbox_base="dbox-${BASE}-base"
 ! distrobox rm $dbox_base
 
 # build new base image
-docker image build --tag ${BASE_IMAGENAME} --file ${BASE_DOCKERFILE} .
+docker image build ${@:1} --tag ${BASE_IMAGENAME} --file ${BASE_DOCKERFILE} .
 
 # build the distrobox
 distrobox-create --image ${BASE_IMAGENAME} --name ${dbox_base} --additional-flags "--label no-prune"
