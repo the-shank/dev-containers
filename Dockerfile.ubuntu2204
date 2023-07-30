@@ -1,9 +1,3 @@
-# Build:
-# ./docker_build.sh
-#
-# Run:
-# ./docker_run.sh
-
 FROM ubuntu:22.04
 
 ARG USER=shank
@@ -13,6 +7,9 @@ ARG GID=1000
 
 ENV USER ${USER}
 ENV HOME /home/${USER}
+
+# better colors
+ENV TERM xterm-256color
 
 # update, upgrade, install sudo
 RUN apt-get update \
@@ -27,18 +24,9 @@ RUN apt-get install -y apt-utils \
 # unminimize since this is a dev container
 RUN yes | unminimize
 
-RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
-    echo "${USER}:${PASSWD}" | chpasswd && \
-    echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
-
-RUN echo "${USER}:${PASSWD}" | chpasswd
-
-# change users default shell
-RUN chsh ${USER} --shell /usr/bin/fish
-
 # locales
 # source: https://serverfault.com/a/801162
-ENV LANG=en_GB.UTF-8
+ENV LANG=en_US.UTF-8
 RUN apt-get install -y locales \
   && sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen \
   && dpkg-reconfigure --frontend=noninteractive locales \
@@ -49,27 +37,28 @@ RUN apt-get install -y \
     apt-file \
     autoconf \
     bat \
+    bfs \
     black \
     clang \
     clang-format \
+    cmake \
     curl \
     exa \
-    flake8 \             
-    gcc \
+    file \
     g++ \
+    gcc \
+    gettext \
     git \
     htop \
     lld \
     make \
+    neofetch \
     ninja-build \
-    openssh-server \
     plocate \
     python-is-python3 \
     python3 \
-    python3-neovim \     
     python3-pip \
     python3-venv \
-    ranger \
     ripgrep \
     software-properties-common \
     stow \
@@ -78,7 +67,6 @@ RUN apt-get install -y \
     unzip \
     universal-ctags \
     wget \
-    x11-xserver-utils \
     xclip \
     xsel \
   && apt-get autoremove -y
@@ -86,19 +74,24 @@ RUN apt-get install -y \
 # bat -> batcat
 RUN ln -s /usr/bin/batcat /usr/bin/bat
 
+# fd -> fdfind
+RUN ln -s /usr/bin/fdfind /usr/bin/fd
+
 # fish shell
 RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get update && \
     apt-get install -y fish && \
     apt-get autoremove -y
 
-# neovim-nightly
-RUN add-apt-repository ppa:neovim-ppa/unstable && \
-    apt-get update && \
-    apt-get install -y \
-        neovim \
-        python3-neovim \
-    && apt-get autoremove -y
+# neovim
+RUN cd /tmp \
+  && wget -c https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz --output-document neovim.tar.gz \
+  && tar xf neovim.tar.gz \
+  && cd neovim-stable \
+  && make CMAKE_BUILD_TYPE=RelWithDebInfo -j$(nproc) \
+  && cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb \
+  && cd /tmp && rm -rf neovim \
+  && apt-get install -y python3-neovim
 
 # lazygit
 RUN mkdir -p /tmp \
@@ -108,15 +101,15 @@ RUN mkdir -p /tmp \
   && tar xf lazygit.tar.gz lazygit \
   && install lazygit /usr/local/bin
 
-# ssh server (so that we can use X11 forwarding for clipboard integration)
-RUN sed -i \
-  -e 's/#Port 22/Port 22/' \
-  -e 's/#PasswordAuthentication .*/PasswordAuthentication yes/' \
-  -e 's/#X11UseLocalhost .*/X11UseLocalhost no/' \
-  /etc/ssh/sshd_config \
-  && service ssh start
+# crate user
+RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
+    echo "${USER}:${PASSWD}" | chpasswd && \
+    echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
+RUN echo "${USER}:${PASSWD}" | chpasswd
+RUN chown -R ${USER} /home/${USER}
 
-EXPOSE 22
+# change users default shell
+RUN chsh ${USER} --shell /usr/bin/fish
 
 # change to $USER directory
 WORKDIR /home/${USER}
@@ -133,19 +126,17 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
 # rust
 # https://github.com/rust-lang/rustup/issues/297#issuecomment-444818896
 RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+RUN mkdir ~/.cargo-target
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install fd-find stylua sd'
-
-# better colors
-ENV TERM xterm-256color
+RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
 
 # stow packages
 RUN cd dotfiles \
-    && rm -f $HOME/.config/fish/functions/fish_user_key_bindings.fish \
+    && rm --force ${HOME}/.config/fish/functions/fish_user_key_bindings.fish \
     && stow --verbose --no-folding fish neovim tmux bins git
 
 # tmux plugin manager
@@ -153,6 +144,12 @@ RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
 # asdf-vm
 RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
+
+# fish prompt
+USER root
+RUN /home/${USER}/.cargo/bin/sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
+RUN /home/${USER}/.cargo/bin/sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
+USER ${USER}
 
 # change the shell for the rest of the commands commands
 SHELL ["/usr/bin/fish", "--login", "-c"]
@@ -169,49 +166,5 @@ RUN source $HOME/.asdf/asdf.fish; asdf install nodejs 18.12.1; asdf global nodej
 RUN source $HOME/.asdf/asdf.fish; npm config set prefix $HOME/.npm-global
 RUN source $HOME/.asdf/asdf.fish; npm install -g prettier neovim
 
-# switch user and update the files database
-USER root
-RUN updatedb
-USER ${USER}
-
-#===================================================
-
-# rust for embedded
-
-# switch to root user
-USER root
-
-# packages
-RUN apt-get -y install \
-  bear \
-  build-essential \
-  clang \
-  cmake \
-  gcc-multilib g++-multilib \
-  git \
-  libc6-dev-i386 \
-  libclang-dev \
-  libnewlib-dev \
-  libssl-dev \
-  llvm \
-  pkg-config \
-  python3 \
-  && apt-get autoremove -y
-
-# toolchains/compilers
-RUN apt-get -y install gcc-arm-none-eabi \
-  && apt-get autoremove -y
-
-# zephyr
-RUN apt-get -y install device-tree-compiler \
-  && apt-get autoremove -y
-
-# RT-thread
-RUN apt-get -y install scons \
-  && apt-get autoremove -y
-
-# switch back to normal user
-USER ${USER}
-
-# c2rust
-RUN /usr/bin/bash --login -c 'cargo install c2rust'
+# python packages
+RUN pip install bpython
