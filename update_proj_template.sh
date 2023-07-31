@@ -8,13 +8,11 @@ BASE_IMAGENAME=devc-ubuntu:22.04
 BASE_DOCKERFILE=Dockerfile.ubuntu2204
 
 # params - proj
-PROJ=rust4embedded
+# PROJ=rust4embedded
 PROJ_IMAGENAME="devc-$PROJ:ubuntu2204"
 PROJ_DOCKERFILE="Dockerfile.proj_$PROJ"
 PROJ_CONTAINERNAME="devc-$PROJ"
-PROJ_MOUNTS=(
-	"--volume /workdisk:/workdisk"
-)
+PROJ_MOUNTS=()
 
 # default mount volumes
 DEFAULT_MOUNTS=(
