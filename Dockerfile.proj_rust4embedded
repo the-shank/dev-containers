@@ -1,0 +1,31 @@
+# THE PROJECT SPECIFIC DOCKERFILE
+
+FROM devc-ubuntu:22.04
+
+# install additional packages
+
+# rust for embedded
+
+# switch to root user
+USER root
+
+# packages
+RUN apt-get install -y \
+  bear \
+  llvm \
+  gcc-arm-none-eabi \
+  device-tree-compiler \
+  scons \
+  llvm-dev \
+  libclang-dev
+
+# switch back to normal user
+USER ${USER}
+SHELL ["/usr/bin/fish", "--login", "-c"]
+
+# c2rust
+# this is failing currently (debug later)
+# RUN /workdisk/shank/.cargo/bin/rustup install nightly
+# RUN /workdisk/shank/.cargo/bin/cargo install c2rust
+
+ENTRYPOINT ["fish"]
