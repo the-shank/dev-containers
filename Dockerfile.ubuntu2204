@@ -101,7 +101,7 @@ RUN mkdir -p /tmp \
   && tar xf lazygit.tar.gz lazygit \
   && install lazygit /usr/local/bin
 
-# crate user
+# create user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
     echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
