@@ -133,12 +133,12 @@ RUN npm config set prefix $HOME/.npm-global
 RUN npm install -g prettier neovim
 
 # copy nix installation script
-COPY scripts/install_nix.sh .
+COPY scripts/setup/nix.sh .
 USER root
 RUN chown ${USER}:${USER} install_nix.sh
 USER ${USER}
 
-# after starting container, use nix for
+# after starting container, use nix for installing
 # - neovim
 # - lazygit
 
