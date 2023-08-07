@@ -170,5 +170,12 @@ RUN source $HOME/.asdf/asdf.fish; npm install -g prettier neovim
 # python packages
 RUN pip install bpython
 
+# copy nix installation script
+COPY scripts/setup/nix.sh .
+COPY scripts/setup/nix_pkgs.sh .
+USER root
+RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
+USER ${USER}
+
 # start fish shell
 ENTRYPOINT ["fish"]

@@ -18,12 +18,5 @@ curl -L https://nixos.org/nix/install | sh -s -- --yes
 . $HOME/.nix-profile/etc/profile.d/nix.sh
 nix --version
 
-# install apps
-# - neovim
-# - lazygit
-nix-env -iA \
-	nixpkgs.neovim \
-	nixpkgs.lazygit
-
 # remove the script itself
 rm -f nix.sh
