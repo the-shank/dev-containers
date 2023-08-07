@@ -11,18 +11,8 @@ ENV HOME /home/${USER}
 # better colors
 ENV TERM xterm-256color
 
-# update, upgrade, install sudo
-RUN apt-get update \
-  && apt-get upgrade -y \
-  && apt-get install -y sudo \
-  && apt-get autoremove -y
-
-# apt-utils will be useful
-RUN apt-get install -y apt-utils \
-  && apt-get autoremove -y
-
-# unminimize since this is a dev container
-RUN yes | unminimize
+# update, upgrade
+RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 # locales
 # source: https://serverfault.com/a/801162
@@ -31,6 +21,17 @@ RUN apt-get install -y locales \
   && sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen \
   && dpkg-reconfigure --frontend=noninteractive locales \
   && update-locale LANG=$LANG
+
+# apt-utils will be useful
+RUN apt-get install -y apt-utils \
+  && apt-get autoremove -y
+
+# install sudo
+RUN apt-get install -y sudo \
+  && apt-get autoremove -y
+
+# unminimize since this is a dev container
+RUN yes | unminimize
 
 # dev packages
 RUN apt-get install -y \
