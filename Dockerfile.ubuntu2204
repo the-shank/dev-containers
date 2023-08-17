@@ -55,6 +55,8 @@ RUN apt-get install -y \
     make \
     neofetch \
     ninja-build \
+    nodejs \
+    npm \
     plocate \
     python-is-python3 \
     python3 \
@@ -84,24 +86,6 @@ RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get install -y fish && \
     apt-get autoremove -y
 
-# neovim
-RUN cd /tmp \
-  && wget -c https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz --output-document neovim.tar.gz \
-  && tar xf neovim.tar.gz \
-  && cd neovim-stable \
-  && make CMAKE_BUILD_TYPE=RelWithDebInfo -j$(nproc) \
-  && cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb \
-  && cd /tmp && rm -rf neovim \
-  && apt-get install -y python3-neovim
-
-# lazygit
-RUN mkdir -p /tmp \
-  && cd /tmp \
-  && LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
-  && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
-  && tar xf lazygit.tar.gz lazygit \
-  && install lazygit /usr/local/bin
-
 # crate user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
@@ -130,7 +114,7 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 RUN mkdir ~/.cargo-target
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer'
+RUN /usr/bin/bash --login -c 'cargo install stylua sd'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
@@ -144,7 +128,7 @@ RUN cd dotfiles \
 RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
 # asdf-vm
-RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
+# RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
 
 # fish prompt
 USER root
@@ -157,15 +141,7 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-RUN fisher install patrickf1/fzf.fish jethrokuan/z
-
-# setup nodejs npm using asdf
-RUN source $HOME/.asdf/asdf.fish; asdf plugin add nodejs
-RUN source $HOME/.asdf/asdf.fish; asdf install nodejs 18.12.1; asdf global nodejs 18.12.1
-
-# npm - install packages globally to user directory
-RUN source $HOME/.asdf/asdf.fish; npm config set prefix $HOME/.npm-global
-RUN source $HOME/.asdf/asdf.fish; npm install -g prettier neovim
+RUN fisher install patrickf1/fzf.fish
 
 # python packages
 RUN pip install bpython
@@ -177,5 +153,9 @@ USER root
 RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
 USER ${USER}
 
+# after starting container, use nix for installing
+# - neovim
+# - lazygit
+
 # start fish shell
-ENTRYPOINT ["fish"]
+# ENTRYPOINT ["fish"]

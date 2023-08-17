@@ -3,24 +3,39 @@
 set -eu
 set -o pipefail
 
-# params
-BASE=ubuntushank
-BASE_DOCKERFILE=Dockerfile.dbox-ubuntu2204
-BASE_IMAGENAME=ubuntushank
+# params - base
+BASE_IMAGENAME=devc-ubuntu2204:latest
+BASE_DOCKERFILE=Dockerfile.ubuntu2204
+BASE_CONTAINERNAME=devc-ubuntu2204
 
-dbox_base="dbox-${BASE}-base"
+# default mount volumes
+DEFAULT_MOUNTS=(
+	"--volume /tmp/.X11-unix:/tmp/.X11-unix"
+	"--volume $HOME:/host_home"
+	"--volume $HOME/code:/home/shank/code"
+	"--volume $HOME/.ssh:/home/shank/.ssh"
+)
 
-# stop any running instance
-! distrobox stop $dbox_base
+# stop running devc container
+echo ">> [0] stopping (and removing) existing container if any..."
+! docker container stop $BASE_CONTAINERNAME
+! docker container rm --force $BASE_CONTAINERNAME
 
-# remove the dbox
-! distrobox rm $dbox_base
+# update base image
+echo ">> [1] updating base image..."
+docker image build \
+	${@:1} \
+	--build-arg UID=$(id -u) --build-arg GID=$(id -g) \
+	--tag ${BASE_IMAGENAME} \
+	--file ${BASE_DOCKERFILE} .
 
-# build new base image
-docker image build ${@:1} --tag ${BASE_IMAGENAME} --file ${BASE_DOCKERFILE} .
-
-# build the distrobox
-distrobox-create --image ${BASE_IMAGENAME} --name ${dbox_base} --additional-flags "--label no-prune"
-
-# enter
-distrobox-enter -n ${dbox_base}
+# build container
+echo ">> [2] creating and running the proj container..."
+docker container run \
+	-it \
+	--label="no-prune" \
+	--name ${BASE_CONTAINERNAME} \
+	--hostname ${BASE_CONTAINERNAME} \
+	${DEFAULT_MOUNTS[@]} \
+	--env DISPLAY=$DISPLAY \
+	${BASE_IMAGENAME}
