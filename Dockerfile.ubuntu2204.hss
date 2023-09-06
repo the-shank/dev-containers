@@ -40,8 +40,6 @@ RUN apt-get install -y \
     bat \
     bfs \
     black \
-    clang \
-    clang-format \
     cmake \
     curl \
     exa \
@@ -153,6 +151,19 @@ COPY scripts/setup/nix_pkgs.sh .
 USER root
 RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
 USER ${USER}
+
+# specific setup (start) ======================
+
+# install llvm-12
+USER root
+RUN apt install llvm-12 clang-12
+RUN ln -s /usr/bin/clang-12 /usr/bin/clang
+RUN ln -s /usr/bin/clang++-12 /usr/bin/clang++
+RUN ln -s /usr/bin/llvm-config-12 /usr/bin/llvm-config
+RUN ln -s /usr/bin/opt-12 /usr/bin/opt
+USER ${USER}
+
+# specific setup (end) ======================
 
 # after starting container, use nix for installing
 # - neovim
