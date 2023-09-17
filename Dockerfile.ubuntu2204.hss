@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 ARG USER=shank
 ARG PASSWD=pass
@@ -7,6 +7,9 @@ ARG GID=1000
 
 ENV USER ${USER}
 ENV HOME /home/${USER}
+
+# to fix tzdata hanging up the build process
+ENV DEBIAN_FRONTEND=noninteractive
 
 # better colors
 ENV TERM xterm-256color

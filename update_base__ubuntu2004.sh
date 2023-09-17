@@ -4,9 +4,9 @@ set -eu
 set -o pipefail
 
 # params - base
-BASE_IMAGENAME=devc-ubuntu2004-hss:latest
-BASE_DOCKERFILE=Dockerfile.ubuntu2004.hss
-BASE_CONTAINERNAME=devc-ubuntu2004-hss
+BASE_IMAGENAME=devc-ubuntu2004:latest
+BASE_DOCKERFILE=Dockerfile.ubuntu2004
+BASE_CONTAINERNAME=devc-ubuntu2004
 
 # default mount volumes
 DEFAULT_MOUNTS=(
@@ -38,4 +38,5 @@ docker container run \
 	--hostname ${BASE_CONTAINERNAME} \
 	${DEFAULT_MOUNTS[@]} \
 	--env DISPLAY=$DISPLAY \
+	--env TZ=$(cat /etc/timezone) \
 	${BASE_IMAGENAME}

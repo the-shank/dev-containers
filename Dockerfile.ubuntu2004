@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 ARG USER=shank
 ARG PASSWD=pass
@@ -47,7 +47,6 @@ RUN apt-get install -y \
     clang-format \
     cmake \
     curl \
-    exa \
     file \
     g++ \
     gcc \
@@ -60,7 +59,6 @@ RUN apt-get install -y \
     ninja-build \
     nodejs \
     npm \
-    plocate \
     python-is-python3 \
     python3 \
     python3-pip \
@@ -70,6 +68,7 @@ RUN apt-get install -y \
     stow \
     tmux \
     tree \
+    tzdata \
     unzip \
     universal-ctags \
     wget \
@@ -118,7 +117,7 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 RUN mkdir ~/.cargo-target
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd'
+RUN /usr/bin/bash --login -c 'cargo install stylua sd exa'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git 
