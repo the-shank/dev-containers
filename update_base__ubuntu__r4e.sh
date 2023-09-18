@@ -4,8 +4,8 @@ set -eu
 set -o pipefail
 
 # params - base
-BASE_IMAGENAME=devc-ubuntu2204:latest
-BASE_DOCKERFILE=Dockerfile.ubuntu2204
+BASE_IMAGENAME=devc-ubuntu2204-r4e:latest
+BASE_DOCKERFILE=Dockerfile.ubuntu2204.r4e
 BASE_CONTAINERNAME=devc-ubuntu2204-r4e
 
 # default mount volumes
