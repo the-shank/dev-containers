@@ -5,7 +5,7 @@ set -o pipefail
 
 # params - base
 BASE_IMAGENAME=devc-ubuntu2004-r4e:latest
-BASE_DOCKERFILE=Dockerfile.ubuntu2004
+BASE_DOCKERFILE=Dockerfile.ubuntu2004.r4e
 BASE_CONTAINERNAME=devc-ubuntu2004-r4e
 
 # default mount volumes
