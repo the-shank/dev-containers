@@ -168,7 +168,20 @@ USER ${USER}
 # rustforembedded specific packages
 
 USER root
+
+# updated cmake
+RUN /usr/bin/bash -c 'wget https://apt.kitware.com/kitware-archive.sh'
+RUN chmod +x ./kitware-archive.sh
+RUN /usr/bin/bash -c "./kitware-archive.sh"
+RUN apt-get install -y cmake
+
+# ARM GCC 10.3
+RUN wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+RUN tar -x -C $HOME/.local/ -f gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+RUN echo "export PATH=\$HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin:\$PATH" >> $HOME/.bashrc
+RUN /bin/bash -c 'ls $HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin | xargs -I{} ln -s $HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin/{} /bin/{}'
+
 RUN apt-get install -y \
-  gcc-arm-none-eabi \
   bear
+
 USER ${USER}
