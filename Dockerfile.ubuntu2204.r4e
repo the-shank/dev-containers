@@ -90,6 +90,11 @@ RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get install -y fish && \
     apt-get autoremove -y
 
+# helix
+RUN add-apt-repository ppa:maveonair/helix-editor \
+  && apt-get update \
+  && apt-get install -y helix
+
 # crate user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
@@ -169,7 +174,26 @@ USER ${USER}
 # rustforembedded specific packages
 
 USER root
+
+# updated cmake
+RUN /usr/bin/bash -c 'wget https://apt.kitware.com/kitware-archive.sh'
+RUN chmod +x ./kitware-archive.sh
+RUN /usr/bin/bash -c "./kitware-archive.sh"
+RUN apt-get install -y cmake
+
+# ARM GCC 10.3
+RUN wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+RUN tar -x -C $HOME/.local/ -f gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+RUN echo "export PATH=\$HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin:\$PATH" >> $HOME/.bashrc
+RUN /bin/bash -c 'ls $HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin | xargs -I{} ln -s $HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin/{} /bin/{}'
+
+# newt
+RUN wget -qO - https://raw.githubusercontent.com/JuulLabs-OSS/debian-mynewt/master/mynewt.gpg.key | apt-key add -
+RUN echo "deb https://raw.githubusercontent.com/JuulLabs-OSS/debian-mynewt/master latest main" > /etc/apt/sources.list.d/mynewt.list
+RUN apt-get update && \
+  apt-get install -y newt
+
 RUN apt-get install -y \
-  gcc-arm-none-eabi \
   bear
+
 USER ${USER}
