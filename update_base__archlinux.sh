@@ -16,6 +16,11 @@ DEFAULT_MOUNTS=(
 	"--volume $HOME/.ssh:/home/shank/.ssh"
 )
 
+# default published ports
+DEFAULT_PORTS=(
+	# "--publish 3306:3306"
+)
+
 # stop running devc container
 echo ">> [0] stopping (and removing) existing container if any..."
 ! docker container stop $BASE_CONTAINERNAME
@@ -37,5 +42,6 @@ docker container run \
 	--name ${BASE_CONTAINERNAME} \
 	--hostname ${BASE_CONTAINERNAME} \
 	${DEFAULT_MOUNTS[@]} \
+	${DEFAULT_PORTS[@]} \
 	--env DISPLAY=$DISPLAY \
 	${BASE_IMAGENAME}
