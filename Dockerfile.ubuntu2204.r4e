@@ -187,6 +187,12 @@ RUN tar -x -C $HOME/.local/ -f gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.b
 RUN echo "export PATH=\$HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin:\$PATH" >> $HOME/.bashrc
 RUN /bin/bash -c 'ls $HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin | xargs -I{} ln -s $HOME/.local/gcc-arm-none-eabi-10.3-2021.10/bin/{} /bin/{}'
 
+# newt
+RUN wget -qO - https://raw.githubusercontent.com/JuulLabs-OSS/debian-mynewt/master/mynewt.gpg.key | apt-key add -
+RUN echo "deb https://raw.githubusercontent.com/JuulLabs-OSS/debian-mynewt/master latest main" > /etc/apt/sources.list.d/mynewt.list
+RUN apt-get update && \
+  apt-get install -y newt
+
 RUN apt-get install -y \
   bear
 
