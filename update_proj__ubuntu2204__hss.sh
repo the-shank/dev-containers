@@ -4,9 +4,9 @@ set -eu
 set -o pipefail
 
 # params - base
-BASE_IMAGENAME=devc-ubuntu2004-hss:latest
-BASE_DOCKERFILE=Dockerfile.ubuntu2004.hss
-BASE_CONTAINERNAME=devc-ubuntu2004-hss
+BASE_IMAGENAME=devc-ubuntu2204-hss:latest
+BASE_DOCKERFILE=Dockerfile.ubuntu2204.hss
+BASE_CONTAINERNAME=devc-ubuntu2204-hss
 
 # default mount volumes
 DEFAULT_MOUNTS=(
