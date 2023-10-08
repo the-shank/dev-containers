@@ -5,14 +5,16 @@
 set -eu
 set -o pipefail
 
-img=$(docker image ls | rg --ignore-case devc | fzf --prompt 'base-image> ' | awk '{print $1}')
-echo "selected image: $img"
+imgtag=$(docker image ls | rg --ignore-case devc | fzf --prompt 'base-image> ' | awk '{printf "%s:%s\n", $1, $2}')
+img=$(echo $imgtag | cut -d':' -f1)
+tag=$(echo $imgtag | cut -d':' -f2)
+echo "selected image: $img:$tag"
 
 read -p "enter project name: " proj
 echo "$proj"
 
 # params
-BASE_IMAGENAME=$img
+BASE_IMAGENAME="$img:$tag"
 CONTAINER_NAME="$img-$proj"
 
 # default mount volumes
