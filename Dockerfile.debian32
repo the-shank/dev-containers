@@ -100,7 +100,7 @@ WORKDIR /home/${USER}
 USER ${USER}
 
 # rust(2)
-RUN mkdir ~/.cargo-target
+# RUN mkdir ~/.cargo-target
 
 # cargo utils
 RUN /usr/bin/bash --login -c 'cargo install stylua sd'

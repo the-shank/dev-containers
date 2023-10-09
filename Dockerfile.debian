@@ -96,7 +96,7 @@ USER ${USER}
 # rust
 # https://github.com/rust-lang/rustup/issues/297#issuecomment-444818896
 RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
-RUN mkdir ~/.cargo-target
+# RUN mkdir ~/.cargo-target
 
 # cargo utils
 RUN /usr/bin/bash --login -c 'cargo install stylua sd'
