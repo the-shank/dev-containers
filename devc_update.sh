@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# update and existing base image
+
+set -eu
+set -o pipefail
+
+DEVC_REPO_DIR=/home/shank/code/misc/dev-container
+
+script=$(find $DEVC_REPO_DIR -type f | \
+  rg --ignore-case "update_" | \
+  rg -i --invert-match "devc_new\.sh" | \
+  rg -i --invert-match "devc_update\.sh" | \
+  fzf --prompt 'script> ')
+${script} ${@:1} 
