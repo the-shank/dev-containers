@@ -11,5 +11,6 @@ script=$(find $DEVC_REPO_DIR -type f | \
   rg --ignore-case "update_" | \
   rg -i --invert-match "devc_new\.sh" | \
   rg -i --invert-match "devc_update\.sh" | \
+  rg -i --invert-match "update_base\.sh" | \
   fzf --prompt 'script> ')
 ${script} ${@:1} 
