@@ -61,6 +61,7 @@ RUN apt-get install -y \
     ninja-build \
     nodejs \
     npm \
+    patchelf \
     plocate \
     python-is-python3 \
     python3 \

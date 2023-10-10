@@ -74,6 +74,7 @@ RUN pacman -Sy --noconfirm \
   openssh \
   pacman-contrib \
   paru \
+  patchelf \
   plocate \
   prettier \
   procs \
