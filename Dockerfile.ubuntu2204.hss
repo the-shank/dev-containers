@@ -18,9 +18,17 @@ RUN ln -s /usr/bin/clang++-12 /usr/bin/clang++
 RUN ln -s /usr/bin/llvm-config-12 /usr/bin/llvm-config
 RUN ln -s /usr/bin/opt-12 /usr/bin/opt
 
+# install z3
+RUN wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.11/z3-4.8.11-x64-glibc-2.31.zip
+RUN unzip z3-4.8.11-x64-glibc-2.31.zip && rm z3-4.8.11-x64-glibc-2.31.zip
+ENV Z3_DIR="$HOME/z3-4.8.11-x64-glibc-2.31"
+
 # specific setup (end) ======================
 
 USER ${USER}
+
+# update LD_LIBRARY_PATH
+RUN echo "export LD_LIBRARY_PATH=/home/shank/code/purdue/ece695/DynamicSymbolicExecution/LLVMBasedDSE/build/DSE:$LD_LIBRARY_PATH" >> $HOME/.bashrc
 
 # after starting container, use nix for installing
 # - neovim
