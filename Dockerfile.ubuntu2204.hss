@@ -25,7 +25,7 @@ ENV Z3_DIR="$HOME/z3-4.8.11-x64-glibc-2.31"
 
 # clangd
 RUN apt install -y clangd-12
-RUN ln -s /usr/bin/clangd /usr/bin/clangd-12
+RUN ln -s /usr/bin/clangd-12 /usr/bin/clangd
 
 # specific setup (end) ======================
 
