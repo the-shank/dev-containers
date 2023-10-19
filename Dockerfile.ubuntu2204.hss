@@ -23,6 +23,10 @@ RUN wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.11/z3-4.8.11-x6
 RUN unzip z3-4.8.11-x64-glibc-2.31.zip && rm z3-4.8.11-x64-glibc-2.31.zip
 ENV Z3_DIR="$HOME/z3-4.8.11-x64-glibc-2.31"
 
+# clangd
+RUN apt install -y clangd-12
+RUN ln -s /usr/bin/clangd /usr/bin/clangd-12
+
 # specific setup (end) ======================
 
 USER ${USER}
