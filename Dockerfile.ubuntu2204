@@ -135,7 +135,9 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer'
 
 # dotfiles
-RUN git clone https://gitlab.com/shank/dotfiles.git 
+RUN git clone https://gitlab.com/shank/dotfiles.git \
+  && cd dotfiles \
+  && git remote set-url origin git@gitlab.com:shank/dotfiles.git
 
 # stow packages
 RUN cd dotfiles \
