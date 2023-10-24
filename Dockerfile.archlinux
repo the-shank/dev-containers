@@ -8,9 +8,6 @@ ARG GID=1000
 ENV USER ${USER}
 ENV HOME /home/${USER}
 
-# timezone
-ENV TZ "America/New_York"
-
 # better colors
 ENV TERM xterm-256color
 
@@ -47,6 +44,11 @@ RUN pacman -Qk 2>&1 \
   | grep --invert-match --extended-regexp "tzdata|filesystem" \
   | grep --invert-match --extended-regexp "^[0-9]+$" \
   | xargs pacman -Sy --noconfirm
+
+# timezone
+ENV TZ "America/Indianapolis"
+RUN ln -s /usr/share/zoneinfo/America/Indianapolis /etc/localtime
+
 
 # remove mlocate -- to be replaced with plocate below
 # RUN pacman -R --noconfirm mlocate
