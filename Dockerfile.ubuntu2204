@@ -8,6 +8,10 @@ ARG GID=1000
 ENV USER ${USER}
 ENV HOME /home/${USER}
 
+# timezone
+ENV TZ "America/New_York"
+
+
 # to fix tzdata hanging up the build process
 ENV DEBIAN_FRONTEND=noninteractive
 
