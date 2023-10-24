@@ -1,0 +1,16 @@
+FROM devc-ubuntu2204
+
+# specific setup (start) ======================
+
+# USER root
+
+# specific setup (end) ======================
+
+# USER ${USER}
+
+# after starting container, use nix for installing
+# - neovim
+# - lazygit
+
+# start fish shell
+# ENTRYPOINT ["fish"]
