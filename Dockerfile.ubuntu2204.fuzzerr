@@ -2,11 +2,69 @@ FROM devc-ubuntu2204
 
 # specific setup (start) ======================
 
-# USER root
+USER root
+
+# remove existing clang/llvm stuff
+RUN apt remove -y \
+    clang\* \
+    libclang\* \
+    llvm\* \
+    libllvm\* \
+  && apt autoremove -y
+
+# install clang 13
+RUN wget https://apt.llvm.org/llvm.sh \
+  && chmod +x llvm.sh \
+  && ./llvm.sh 13 all
+RUN update-alternatives \
+        --install /usr/bin/llvm-config       llvm-config      /usr/bin/llvm-config-13 10 \
+        --slave   /usr/bin/llvm-ar           llvm-ar          /usr/bin/llvm-ar-13 \
+        --slave   /usr/bin/llvm-as           llvm-as          /usr/bin/llvm-as-13 \
+        --slave   /usr/bin/llvm-bcanalyzer   llvm-bcanalyzer  /usr/bin/llvm-bcanalyzer-13 \
+        --slave   /usr/bin/llvm-cov          llvm-cov         /usr/bin/llvm-cov-13 \
+        --slave   /usr/bin/llvm-diff         llvm-diff        /usr/bin/llvm-diff-13 \
+        --slave   /usr/bin/llvm-dis          llvm-dis         /usr/bin/llvm-dis-13 \
+        --slave   /usr/bin/llvm-dwarfdump    llvm-dwarfdump   /usr/bin/llvm-dwarfdump-13 \
+        --slave   /usr/bin/llvm-extract      llvm-extract     /usr/bin/llvm-extract-13 \
+        --slave   /usr/bin/llvm-link         llvm-link        /usr/bin/llvm-link-13 \
+        --slave   /usr/bin/llvm-mc           llvm-mc          /usr/bin/llvm-mc-13 \
+        --slave   /usr/bin/llvm-nm           llvm-nm          /usr/bin/llvm-nm-13 \
+        --slave   /usr/bin/llvm-objdump      llvm-objdump     /usr/bin/llvm-objdump-13 \
+        --slave   /usr/bin/llvm-ranlib       llvm-ranlib      /usr/bin/llvm-ranlib-13 \
+        --slave   /usr/bin/llvm-readobj      llvm-readobj     /usr/bin/llvm-readobj-13 \
+        --slave   /usr/bin/llvm-rtdyld       llvm-rtdyld      /usr/bin/llvm-rtdyld-13 \
+        --slave   /usr/bin/llvm-size         llvm-size        /usr/bin/llvm-size-13 \
+        --slave   /usr/bin/llvm-stress       llvm-stress      /usr/bin/llvm-stress-13 \
+        --slave   /usr/bin/llvm-symbolizer   llvm-symbolizer  /usr/bin/llvm-symbolizer-13 \
+        --slave   /usr/bin/llvm-tblgen       llvm-tblgen      /usr/bin/llvm-tblgen-13 \
+        --slave   /usr/bin/llvm-readelf      llvm-readelf     /usr/bin/llvm-readelf-13 \
+        --slave   /usr/bin/llvm-addr2line    llvm-addr2line   /usr/bin/llvm-addr2line-13 \
+        --slave   /usr/bin/opt               opt              /usr/bin/opt-13
+RUN update-alternatives \
+        --install /usr/bin/clang                 clang                 /usr/bin/clang-13 10 \
+        --slave   /usr/bin/clang++               clang++               /usr/bin/clang++-13  \
+        --slave   /usr/bin/asan_symbolize        asan_symbolize        /usr/bin/asan_symbolize-13 \
+        --slave   /usr/bin/c-index-test          c-index-test          /usr/bin/c-index-test-13 \
+        --slave   /usr/bin/clang-check           clang-check           /usr/bin/clang-check-13 \
+        --slave   /usr/bin/clang-cl              clang-cl              /usr/bin/clang-cl-13 \
+        --slave   /usr/bin/clang-cpp             clang-cpp             /usr/bin/clang-cpp-13 \
+        --slave   /usr/bin/clang-format          clang-format          /usr/bin/clang-format-13 \
+        --slave   /usr/bin/clang-format-diff     clang-format-diff     /usr/bin/clang-format-diff-13 \
+        --slave   /usr/bin/clang-import-test     clang-import-test     /usr/bin/clang-import-test-13 \
+        --slave   /usr/bin/clang-include-fixer   clang-include-fixer   /usr/bin/clang-include-fixer-13 \
+        --slave   /usr/bin/clang-offload-bundler clang-offload-bundler /usr/bin/clang-offload-bundler-13 \
+        --slave   /usr/bin/clang-query           clang-query           /usr/bin/clang-query-13 \
+        --slave   /usr/bin/clang-rename          clang-rename          /usr/bin/clang-rename-13 \
+        --slave   /usr/bin/clang-reorder-fields  clang-reorder-fields  /usr/bin/clang-reorder-fields-13 \
+        --slave   /usr/bin/clang-tidy            clang-tidy            /usr/bin/clang-tidy-13 \
+        --slave   /usr/bin/clangd                clangd                /usr/bin/clangd-13 \
+        --slave   /usr/bin/lldb                  lldb                  /usr/bin/lldb-13 \
+        --slave   /usr/bin/lldb-server           lldb-server           /usr/bin/lldb-server-13
+
 
 # specific setup (end) ======================
 
-# USER ${USER}
+USER ${USER}
 
 # after starting container, use nix for installing
 # - neovim
