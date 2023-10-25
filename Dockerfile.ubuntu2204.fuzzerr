@@ -61,6 +61,8 @@ RUN update-alternatives \
         --slave   /usr/bin/lldb                  lldb                  /usr/bin/lldb-13 \
         --slave   /usr/bin/lldb-server           lldb-server           /usr/bin/lldb-server-13
 
+# bear
+RUN apt-get install -y bear
 
 # specific setup (end) ======================
 
