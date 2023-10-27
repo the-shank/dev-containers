@@ -134,8 +134,8 @@ RUN cd dotfiles \
 RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
 # copy nix installation script
-COPY scripts/setup/nix.sh .
-COPY scripts/setup/nix_pkgs.sh .
+COPY scripts/setup/nix.sh ${HOME}/
+COPY scripts/setup/nix_pkgs.sh ${HOME}/
 USER root
 RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
 USER ${USER}
