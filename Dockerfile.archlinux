@@ -95,6 +95,7 @@ RUN pacman -Sy --noconfirm \
   tealdeer \
   tmux \
   tree \
+  unzip \
   xclip \
   xsel
 
