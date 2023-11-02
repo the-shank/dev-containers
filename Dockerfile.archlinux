@@ -69,6 +69,7 @@ RUN pacman -Sy --noconfirm \
   htop \
   jq \
   lazygit \
+  less \
   lf \
   lld \
   man-pages \
