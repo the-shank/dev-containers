@@ -4,14 +4,14 @@ set -eu
 set -o pipefail
 
 usage() {
-  echo "Usage:"
-  echo "./update_base.sh <BASE_IMAGENAME> <BASE_DOCKERFILE> <BASE_CONTAINERNAME> [<extra_args>]"
+	echo "Usage:"
+	echo "./update_base.sh <BASE_IMAGENAME> <BASE_DOCKERFILE> <BASE_CONTAINERNAME> [<extra_args>]"
 }
 
 # check that we have exactly 3 params
 if [ $# -lt 3 ]; then
-  usage
-  exit 1
+	usage
+	exit 1
 fi
 
 DEVC_REPO_DIR=/home/shank/code/misc/dev-container
@@ -47,7 +47,8 @@ echo ">> [0] stopping (and removing) existing container if any..."
 echo ">> [1] updating base image..."
 docker image build \
 	${@:4} \
-	--build-arg UID=$(id -u) --build-arg GID=$(id -g) \
+	--build-arg UID=$(id -u) \
+	--build-arg GID=$(id -g) \
 	--tag ${BASE_IMAGENAME} \
 	--file "$DEVC_REPO_DIR/$BASE_DOCKERFILE" .
 
