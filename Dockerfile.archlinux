@@ -75,6 +75,7 @@ RUN pacman -Sy --noconfirm \
   man-pages \
   neofetch \
   neovim \
+  ninja \
   nodejs \
   npm \
   openssh \
