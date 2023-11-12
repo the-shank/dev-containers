@@ -33,6 +33,11 @@ DEFAULT_MOUNTS=(
 	"--volume $HOME/.ssh:/home/shank/.ssh"
 )
 
+# if /workdisk exists, then add it to the list of mounts as well
+if [ -d /workdisk ]; then
+	DEFAULT_MOUNTS+=("--volume /workdisk:/workdisk")
+fi
+
 # default published ports
 DEFAULT_PORTS=(
 	# "--publish 3306:3306"
