@@ -73,6 +73,7 @@ RUN pacman -Sy --noconfirm \
   less \
   lf \
   lld \
+  man-db \
   man-pages \
   neofetch \
   neovim \
