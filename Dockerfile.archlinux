@@ -134,7 +134,7 @@ RUN rm -rf ~/.config/nvim \
 # stow packages
 RUN cd dotfiles \
     && rm --force ${HOME}/.config/fish/functions/fish_user_key_bindings.fish \
-    && stow --verbose --no-folding fish neovim tmux bins git
+    && stow --verbose --no-folding fish neovim tmux bins git lf
 
 # tmux plugin manager
 RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
