@@ -13,7 +13,10 @@ RUN rustup install nightly stable
 RUN rustup default nightly
 
 # install rustup components
-RUN rustup +nightly component add rustc-dev llvm-tools-preview
+RUN rustup +nightly component add \
+  rustc-dev \
+  llvm-tools-preview \
+  rust-analyzer
 
 # install compilation targets (for no_std compilation)
 RUN rustup +nightly target add thumbv7em-none-eabihf
