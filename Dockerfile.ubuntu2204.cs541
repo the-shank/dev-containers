@@ -1,0 +1,15 @@
+FROM devc-ubuntu2204
+
+# cs541 specific packages
+
+USER root
+
+
+USER ${USER}
+
+# after starting container, use nix for installing
+# - neovim
+# - lazygit
+
+# start fish shell
+# ENTRYPOINT ["fish"]
