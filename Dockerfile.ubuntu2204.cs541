@@ -4,8 +4,16 @@ FROM devc-ubuntu2204
 
 USER root
 
+# install jdk
+RUN apt-get install -y openjdk-18-jdk
 
 USER ${USER}
+
+# install jdtls (the language server)
+RUN mkdir -p $HOME/tmp $HOME/applications/jdtls && \
+  wget -c "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.9.0/jdt-language-server-1.9.0-202203031534.tar.gz" -O $HOME/tmp/jdtls.tar.gz && \
+  tar -xvf $HOME/tmp/jdtls.tar.gz -C $HOME/applications/jdtls
+RUN echo "fish_add_path $HOME/applications/jdtls/bin" >> $HOME/.config/fish/config.fish
 
 # after starting container, use nix for installing
 # - neovim
