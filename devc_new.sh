@@ -40,5 +40,5 @@ docker container run \
 	--hostname ${CONTAINER_NAME} \
 	${DEFAULT_MOUNTS[@]} \
 	${DEFAULT_PORTS[@]} \
-	--env DISPLAY=$DISPLAY \
 	${BASE_IMAGENAME}
+# --env DISPLAY=$DISPLAY \
