@@ -144,8 +144,12 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
 RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 # RUN mkdir ~/.cargo-target
 
+# install rust (using rustup)
+RUN /usr/bin/bash --login -c "rustup install nightly stable"
+RUN /usr/bin/bash --login -c "rustup default nightly"
+
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer procs'
+RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer procs cargo-cache'
 
 # stow packages
 RUN cd dotfiles \

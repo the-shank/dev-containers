@@ -8,10 +8,6 @@ USER root
 
 USER ${USER}
 
-# install rust (using rustup)
-RUN rustup install nightly stable
-RUN rustup default nightly
-
 # install rustup components
 RUN rustup +nightly component add \
   rustc-dev \
