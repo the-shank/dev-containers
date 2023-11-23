@@ -8,7 +8,8 @@ set -o pipefail
 nix-env -iA \
 	nixpkgs.neovim \
 	nixpkgs.lazygit \
-	nixpkgs.lf
+	nixpkgs.lf \
+	nixpkgs.just
 
 # remove the script itself
 rm -f nix_pkgs.sh

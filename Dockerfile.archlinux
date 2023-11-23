@@ -69,6 +69,7 @@ RUN pacman -Sy --noconfirm \
   helix \
   htop \
   jq \
+  just \
   lazygit \
   less \
   lf \
