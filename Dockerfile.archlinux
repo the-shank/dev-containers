@@ -66,6 +66,7 @@ RUN pacman -Sy --noconfirm \
   fd \
   fish \
   fzf \
+  gdu \
   helix \
   htop \
   jq \

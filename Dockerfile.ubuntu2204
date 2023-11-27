@@ -69,6 +69,7 @@ RUN apt-get install -y \
     file \
     g++ \
     gcc \
+    gdu \
     gettext \
     git \
     htop \
