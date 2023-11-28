@@ -73,11 +73,14 @@ RUN apt-get install -y \
     gettext \
     git \
     htop \
+    libssl-dev \
     lld \
     make \
     neofetch \
     ninja-build \
+    openssl \
     patchelf \
+    pkg-config \
     plocate \
     python-is-python3 \
     python3 \
@@ -146,8 +149,8 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 # RUN mkdir ~/.cargo-target
 
 # install rust (using rustup)
-RUN /usr/bin/bash --login -c "rustup install nightly stable"
-RUN /usr/bin/bash --login -c "rustup default nightly"
+RUN /usr/bin/bash --login -c 'rustup install nightly stable'
+RUN /usr/bin/bash --login -c 'rustup default nightly'
 
 # cargo utils
 RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer procs cargo-cache'
@@ -160,17 +163,37 @@ RUN cd dotfiles \
 # tmux plugin manager
 RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
-# asdf-vm
-# RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
-
 # fish prompt
 USER root
 RUN /home/${USER}/.cargo/bin/sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
 RUN /home/${USER}/.cargo/bin/sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
 USER ${USER}
 
+# asdf-vm
+# RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.10.2
+
+# nix installation
+USER root
+RUN mkdir /nix && chown ${USER} /nix
+USER ${USER}
+RUN curl -L https://nixos.org/nix/install | sh
+
 # change the shell for the rest of the commands commands
 SHELL ["/usr/bin/fish", "--login", "-c"]
+
+# nix packages
+RUN nix-env -iA \
+	nixpkgs.neovim \
+	nixpkgs.lazygit \
+	nixpkgs.lf \
+	nixpkgs.just
+
+# my utils (utils-rs)
+RUN git clone https://gitlab.com/shank/utils-rs.git \
+  && cd utils-rs \
+  && /usr/bin/bash --login -c 'just install' \
+  && cd .. \
+  && rm -r utils-rs
 
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
@@ -178,17 +201,3 @@ RUN fisher install patrickf1/fzf.fish
 
 # python packages
 RUN pip install bpython
-
-# copy nix installation script
-COPY scripts/setup/nix.sh .
-COPY scripts/setup/nix_pkgs.sh .
-USER root
-RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
-USER ${USER}
-
-# after starting container, use nix for installing
-# - neovim
-# - lazygit
-
-# start fish shell
-# ENTRYPOINT ["fish"]

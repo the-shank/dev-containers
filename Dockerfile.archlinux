@@ -148,16 +148,22 @@ RUN cd dotfiles \
 # tmux plugin manager
 RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
+# nix installation
+USER root
+RUN mkdir /nix && chown ${USER} /nix
+USER ${USER}
+RUN curl -L https://nixos.org/nix/install | sh
+
 # change the shell for the rest of the commands commands
 SHELL ["/usr/bin/fish", "--login", "-c"]
+
+# my utils (utils-rs)
+RUN git clone https://gitlab.com/shank/utils-rs.git \
+  && cd utils-rs \
+  && just install \
+  && cd .. \
+  && rm -r utils-rs
 
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 RUN fisher install patrickf1/fzf.fish
-
-# copy nix installation script
-COPY scripts/setup/nix.sh ${HOME}/
-COPY scripts/setup/nix_pkgs.sh ${HOME}/
-USER root
-RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
-USER ${USER}
