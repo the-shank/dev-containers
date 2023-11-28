@@ -55,6 +55,7 @@ RUN ln -s /usr/share/zoneinfo/America/Indianapolis /etc/localtime
 # packages
 RUN pacman -Sy --noconfirm \
   bat \
+  bc \
   bfs \
   bpython \
   clang \
