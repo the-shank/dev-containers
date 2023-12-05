@@ -7,8 +7,8 @@ USER root
 # install jdk
 RUN apt-get install -y \
   libkyotocabinet-dev \
-  libsnappy-dev \
   libsqlite3-dev
+  # libsnappy-dev \
   # openjdk-18-jdk \
 
 USER ${USER}
