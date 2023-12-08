@@ -38,6 +38,7 @@ docker container run \
 	--label="no-prune" \
 	--name ${CONTAINER_NAME} \
 	--hostname ${CONTAINER_NAME} \
+	${@:1} \
 	${DEFAULT_MOUNTS[@]} \
 	${DEFAULT_PORTS[@]} \
 	${BASE_IMAGENAME}
