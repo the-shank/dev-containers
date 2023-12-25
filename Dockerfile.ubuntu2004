@@ -166,7 +166,7 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-RUN fisher install patrickf1/fzf.fish
+RUN fisher install patrickf1/fzf.fish jethrokuan/z
 
 # python packages
 RUN pip install bpython
