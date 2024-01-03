@@ -10,6 +10,7 @@ USER ${USER}
 
 # install rustup components
 RUN rustup +nightly component add \
+  rust-src \
   rustc-dev \
   llvm-tools-preview \
   rust-analyzer
