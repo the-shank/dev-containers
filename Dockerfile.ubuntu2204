@@ -81,6 +81,7 @@ RUN apt-get install -y \
     ninja-build \
     openssl \
     patchelf \
+    pipx \
     pkg-config \
     plocate \
     python-is-python3 \

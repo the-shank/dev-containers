@@ -95,6 +95,7 @@ RUN pacman -Sy --noconfirm \
   python-black \
   python-neovim \
   python-pip \
+  python-pipx \
   ripgrep \
   rustup \
   sd \
