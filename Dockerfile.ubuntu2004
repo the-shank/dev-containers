@@ -74,6 +74,7 @@ RUN apt-get install -y \
     make \
     neofetch \
     ninja-build \
+    pipx \
     python-is-python3 \
     python3 \
     python3-pip \
@@ -175,7 +176,7 @@ RUN pip install bpython
 COPY scripts/setup/nix.sh .
 COPY scripts/setup/nix_pkgs.sh .
 USER root
-RUN chown ${USER}:${USER} nix.sh nix_pkgs.sh
+RUN chown $USER:$USER nix.sh nix_pkgs.sh
 USER ${USER}
 
 # after starting container, use nix for installing
