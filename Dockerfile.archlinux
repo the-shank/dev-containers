@@ -99,6 +99,7 @@ RUN pacman -Sy --noconfirm \
   ripgrep \
   rustup \
   sd \
+  shfmt \
   stow \
   strace \
   stylua \
