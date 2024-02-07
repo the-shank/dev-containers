@@ -138,7 +138,7 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 # RUN mkdir ~/.cargo-target
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd exa tealdeer procs'
+RUN /usr/bin/bash --login -c 'cargo install stylua sd exa tealdeer procs tokei'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git \
