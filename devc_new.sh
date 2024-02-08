@@ -24,6 +24,7 @@ DEFAULT_MOUNTS=(
 	"--volume $HOME/code:/home/shank/code"
 	"--volume $HOME/.ssh:/home/shank/.ssh"
 	"--volume /workdisk/shank/:/workdisk/shank/"
+	"--volume /run/user/1000/ssh-agent.socket:/tmp/ssh-agent.socket"
 )
 
 # default published ports

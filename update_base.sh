@@ -31,6 +31,7 @@ DEFAULT_MOUNTS=(
 	"--volume $HOME:/host_home"
 	"--volume $HOME/code:/home/shank/code"
 	"--volume $HOME/.ssh:/home/shank/.ssh"
+	"--volume /run/user/1000/ssh-agent.socket:/tmp/ssh-agent.socket"
 )
 
 # if /workdisk exists, then add it to the list of mounts as well
