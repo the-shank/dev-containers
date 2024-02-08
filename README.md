@@ -8,15 +8,19 @@ base image -> project image -> dev containers
 
 - Create/update base image
 
-```bash
-./update_base__debian.sh
-# OR
-./update_base__debian.sh --no-cache
+  ```bash
+  ./update_base__debian.sh
+  # OR
+  ./update_base__debian.sh --no-cache
 ```
 
 - Create dev container based on an existing image
 
-```bash
-# give you the option to choose the image and project name
-./new_devc.sh
-```
+  ```bash
+  # gives you the option to choose the image and project name
+  ./devc_new.sh
+ 
+  # limits the cpu usage (useful for containers running evaluation stuff)
+  # max cpu usage = cpus / total cpus
+  ./devc_new.sh --cpus="15"
+  ```
