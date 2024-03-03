@@ -65,6 +65,7 @@ docker container run \
 	--label="no-prune" \
 	--name ${BASE_CONTAINERNAME} \
 	--hostname ${BASE_CONTAINERNAME} \
+	--security-opt seccomp=unconfined \
 	${DEFAULT_MOUNTS[@]} \
 	${DEFAULT_PORTS[@]} \
 	${BASE_IMAGENAME}
