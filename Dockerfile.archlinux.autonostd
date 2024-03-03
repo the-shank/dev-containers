@@ -15,13 +15,11 @@ RUN rustup +nightly component add \
   llvm-tools-preview \
   rust-analyzer
 
-# install toolchain an rustup components as per rustc-plugin as well
-# (this is required for building the extractor)
-RUN rustup toolchain add nightly-2023-08-25
-RUN rustup +nightly-2023-08-25 component add \
+# install components
+RUN rustup +nightly component add \
   rust-src \
   rustc-dev \
-  llvm-tools-preview
+  llvm-tools
 
 # install all targets (crates might be targeting different architectures)
 RUN rustup +nightly target list \
