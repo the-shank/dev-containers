@@ -66,6 +66,7 @@ docker container run \
 	--name ${BASE_CONTAINERNAME} \
 	--hostname ${BASE_CONTAINERNAME} \
 	--security-opt seccomp=unconfined \
+	--cap-add=SYS_PTRACE \
 	${DEFAULT_MOUNTS[@]} \
 	${DEFAULT_PORTS[@]} \
 	${BASE_IMAGENAME}
