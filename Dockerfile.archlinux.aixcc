@@ -1,0 +1,17 @@
+FROM devc-archlinux:base-devel
+
+USER root
+
+# specific setup (start) ======================
+
+RUN pacman -Syu --noconfirm maven jdk8-openjdk jdk-openjdk
+
+# specific setup (end) ======================
+
+USER ${USER}
+
+# codeql stuff
+# codeql from host is used since $HOME/code/applications/codeql is on PATH.
+
+# start fish shell
+# ENTRYPOINT ["fish"]
