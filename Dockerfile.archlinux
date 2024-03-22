@@ -60,6 +60,7 @@ RUN pacman -Sy --noconfirm \
   bpython \
   clang \
   cmake \
+  difftastic \
   direnv \
   docker \
   exa \
@@ -77,6 +78,7 @@ RUN pacman -Sy --noconfirm \
   less \
   lf \
   lld \
+  lldb \
   man-db \
   man-pages \
   neofetch \

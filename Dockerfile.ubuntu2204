@@ -155,7 +155,7 @@ RUN /usr/bin/bash --login -c 'rustup install nightly stable'
 RUN /usr/bin/bash --login -c 'rustup default nightly'
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer procs cargo-cache tokei'
+RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer procs cargo-cache tokei difftastic'
 
 # stow packages
 RUN cd dotfiles \
