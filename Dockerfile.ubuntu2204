@@ -142,6 +142,7 @@ RUN git clone https://gitlab.com/shank/dotfiles.git \
 #   && git clone https://github.com/NvChad/NvChad ~/.config/nvim-nvchad --depth 1
 
 # fzf
+RUN mkdir -p /home/${USER}/.config/fish/conf.d
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
     /home/${USER}/.fzf/install --all
 
@@ -155,7 +156,7 @@ RUN /usr/bin/bash --login -c 'rustup install nightly stable'
 RUN /usr/bin/bash --login -c 'rustup default nightly'
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd tealdeer procs cargo-cache tokei difftastic'
+RUN /usr/bin/fish --login -c 'cargo install stylua sd tealdeer procs cargo-cache tokei difftastic'
 
 # stow packages
 RUN cd dotfiles \
