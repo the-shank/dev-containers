@@ -109,6 +109,8 @@ RUN pacman -Sy --noconfirm \
   tmux \
   tokei \
   tree \
+  tree-sitter \
+  tree-sitter-cli \
   unzip \
   xclip \
   xsel
