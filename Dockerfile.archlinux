@@ -88,6 +88,7 @@ RUN pacman -Sy --noconfirm \
   npm \
   openssh \
   pacman-contrib \
+  parallel \
   paru \
   patchelf \
   plocate \

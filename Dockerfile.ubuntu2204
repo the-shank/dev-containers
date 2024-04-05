@@ -80,6 +80,7 @@ RUN apt-get install -y \
     neofetch \
     ninja-build \
     openssl \
+    parallel \
     patchelf \
     pipx \
     pkg-config \
