@@ -134,6 +134,7 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
 
 # rust
 # https://github.com/rust-lang/rustup/issues/297#issuecomment-444818896
+RUN mkdir -p /home/${USER}/.config/fish/conf.d
 RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 # RUN mkdir ~/.cargo-target
 
