@@ -64,7 +64,7 @@ RUN apt-get install -y \
     clang-format \
     cmake \
     curl \
-    exa \
+    eza \
     fd-find \
     file \
     fish \
@@ -121,6 +121,7 @@ RUN ln -s /usr/bin/fdfind /usr/bin/fd
 #   && apt-get install -y helix
 
 # create user
+RUN userdel ubuntu && rm -r /home/ubuntu
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
     echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
