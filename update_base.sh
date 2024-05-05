@@ -39,6 +39,11 @@ if [ -d /workdisk ]; then
 	DEFAULT_MOUNTS+=("--volume /workdisk:/workdisk")
 fi
 
+# if /evaldisk exists, then add it to the list of mounts as well
+if [ -d /evaldisk ]; then
+	DEFAULT_MOUNTS+=("--volume /evaldisk:/evaldisk")
+fi
+
 # default published ports
 DEFAULT_PORTS=(
 	# "--publish 3306:3306"
