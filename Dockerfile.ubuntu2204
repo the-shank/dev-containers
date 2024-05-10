@@ -90,6 +90,7 @@ RUN apt-get install -y \
     python3-pip \
     python3-venv \
     ripgrep \
+    rsync \
     software-properties-common \
     stow \
     tmux \
