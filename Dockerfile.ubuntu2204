@@ -115,11 +115,6 @@ RUN add-apt-repository ppa:fish-shell/release-3 && \
     apt-get install -y fish && \
     apt-get autoremove -y
 
-# # helix
-# RUN add-apt-repository ppa:maveonair/helix-editor \
-#   && apt-get update \
-#   && apt-get install -y helix
-
 # create user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
     echo "${USER}:${PASSWD}" | chpasswd && \
@@ -163,7 +158,7 @@ RUN /usr/bin/fish --login -c 'cargo install stylua sd tealdeer procs cargo-cache
 # stow packages
 RUN cd dotfiles \
     && rm --force ${HOME}/.config/fish/functions/fish_user_key_bindings.fish \
-    && stow --verbose --no-folding fish neovim tmux bins git helix gdb vifm
+    && stow --verbose --no-folding fish neovim tmux bins git gdb vifm
 
 # tmux plugin manager
 RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
