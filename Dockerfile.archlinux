@@ -92,6 +92,7 @@ RUN pacman -Sy --noconfirm \
   paru \
   patchelf \
   plocate \
+  poppler \
   prettier \
   procs \
   python \
@@ -113,9 +114,12 @@ RUN pacman -Sy --noconfirm \
   tree \
   tree-sitter \
   tree-sitter-cli \
+  unarchiver \
   unzip \
   xclip \
-  xsel
+  xsel \
+  yazi \
+  zoxide
 
 # fish prompt
 RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
