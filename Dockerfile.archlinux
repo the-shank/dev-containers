@@ -100,6 +100,7 @@ RUN pacman -Sy --noconfirm \
   python-pipx \
   ripgrep \
   rsync \
+  rust-analyzer \
   rustup \
   sd \
   shfmt \
