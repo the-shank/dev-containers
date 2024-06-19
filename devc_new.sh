@@ -23,6 +23,8 @@ DEFAULT_MOUNTS=(
 	"--volume $HOME:/host_home"
 	"--volume $HOME/code:/home/shank/code"
 	"--volume $HOME/.ssh:/home/shank/.ssh"
+	"--volume $HOME/.cargo:/home/shank/.cargo"
+	"--volume $HOME/.rustup:/home/shank/.rustup"
 	"--volume /workdisk/shank/:/workdisk/shank/"
 	"--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
 )
