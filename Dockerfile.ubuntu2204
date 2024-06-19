@@ -186,7 +186,8 @@ RUN nix-env -iA \
 	nixpkgs.neovim \
 	nixpkgs.lazygit \
 	nixpkgs.just \
-  nixpkgs.yazi
+  nixpkgs.yazi \
+  nixpkgs.zoxide
 
 # my utils (utils-rs)
 RUN git clone https://gitlab.com/shank/utils-rs.git \
