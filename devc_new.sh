@@ -25,9 +25,23 @@ DEFAULT_MOUNTS=(
 	"--volume $HOME/.ssh:/home/shank/.ssh"
 	"--volume $HOME/.cargo:/home/shank/.cargo"
 	"--volume $HOME/.rustup:/home/shank/.rustup"
-	"--volume /workdisk/shank/:/workdisk/shank/"
 	"--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
 )
+
+# if /workdisk exists, then add it to the list of mounts as well
+if [ -d /workdisk ]; then
+	DEFAULT_MOUNTS+=("--volume /workdisk:/workdisk")
+fi
+
+# if /evaldisk exists, then add it to the list of mounts as well
+if [ -d /evaldisk ]; then
+	DEFAULT_MOUNTS+=("--volume /evaldisk:/evaldisk")
+fi
+
+# if /home/common exists, then add it to the list of mounts as well
+if [ -d /home/common ]; then
+	DEFAULT_MOUNTS+=("--volume /home/common:/home/common")
+fi
 
 # default published ports
 DEFAULT_PORTS=(
