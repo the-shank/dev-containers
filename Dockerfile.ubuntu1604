@@ -57,6 +57,7 @@ RUN apt-get install -y sudo \
 RUN apt-get install -y \
     apt-file \
     autoconf \
+    bash \
     # bat \
     # bfs \
     # black \
@@ -92,11 +93,16 @@ RUN apt-get install -y \
     zip \
   && apt-get autoremove -y
 
+RUN apt-get install -y \
+  vim
+
 # bat -> batcat
-RUN ln -s /usr/bin/batcat /usr/bin/bat
+# RUN ln -s /usr/bin/batcat /usr/bin/bat
+RUN ln -s /usr/bin/batcat /home/${USER}/.cargo/bin/bat
 
 # fd -> fdfind
-RUN ln -s /usr/bin/fdfind /usr/bin/fd
+# RUN ln -s /usr/bin/fdfind /usr/bin/fd
+RUN ln -s /usr/bin/fdfind/home/${USER}/.cargo/bin/fd 
 
 # fish shell
 RUN add-apt-repository ppa:fish-shell/release-3 && \
@@ -135,15 +141,15 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
 # rust
 # https://github.com/rust-lang/rustup/issues/297#issuecomment-444818896
 RUN mkdir -p /home/${USER}/.config/fish/conf.d
-RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
+RUN /bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 # RUN mkdir ~/.cargo-target
 
 # install rust (using rustup)
-RUN /usr/bin/bash --login -c 'rustup install nightly stable'
-RUN /usr/bin/bash --login -c 'rustup default nightly'
+RUN /bin/bash --login -c 'rustup install nightly stable'
+RUN /bin/bash --login -c 'rustup default nightly'
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install stylua sd exa tealdeer procs tokei difftastic tree-sitter-cli'
+RUN /bin/bash --login -c 'cargo install bat fd-find stylua sd exa tealdeer procs tokei difftastic tree-sitter-cli'
 
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git \
@@ -172,10 +178,10 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-RUN fisher install patrickf1/fzf.fish jethrokuan/z
+RUN fisher install patrickf1/fzf.fish
 
-# python packages
-RUN pip install bpython
+# # python packages
+# RUN pip install bpython
 
 # copy nix installation script
 COPY scripts/setup/nix.sh .
