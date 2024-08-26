@@ -5,11 +5,11 @@ ARG PASSWD=pass
 ARG UID=1000
 ARG GID=1000
 
-ENV USER ${USER}
-ENV HOME /home/${USER}
+ENV USER=${USER}
+ENV HOME=/home/${USER}
 
 # better colors
-ENV TERM xterm-256color
+ENV TERM=xterm-256color
 
 # update
 RUN pacman -Syu --noconfirm
@@ -43,10 +43,11 @@ RUN pacman -Qk 2>&1 \
   | sed -e 's/://' \
   | grep --invert-match --extended-regexp "tzdata|filesystem" \
   | grep --invert-match --extended-regexp "^[0-9]+$" \
+  | grep --invert-match --extended-regexp "22warning" \
   | xargs pacman -Sy --noconfirm
 
 # timezone
-ENV TZ "America/Indianapolis"
+ENV TZ="America/Indianapolis"
 RUN ln -s /usr/share/zoneinfo/America/Indianapolis /etc/localtime
 
 # remove mlocate -- to be replaced with plocate below

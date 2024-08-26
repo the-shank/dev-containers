@@ -5,14 +5,14 @@ ARG PASSWD=pass
 ARG UID=1000
 ARG GID=1000
 
-ENV USER ${USER}
-ENV HOME /home/${USER}
+ENV USER=${USER}
+ENV HOME=/home/${USER}
 
 # to fix tzdata hanging up the build process
 ENV DEBIAN_FRONTEND=noninteractive
 
 # better colors
-ENV TERM xterm-256color
+ENV TERM=xterm-256color
 
 # update, upgrade
 RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
@@ -30,7 +30,7 @@ RUN apt-get install -yq tzdata \
   && mv /etc/localtime /etc/localtime.bak \
   && ln -s /usr/share/zoneinfo/America/Indianapolis /etc/localtime \
   && dpkg-reconfigure -f noninteractive tzdata
-ENV TZ "America/Indianapolis"
+ENV TZ="America/Indianapolis"
 
 # apt-utils will be useful
 RUN apt-get install -y apt-utils \
@@ -44,7 +44,7 @@ RUN apt-get install -y sudo \
 # RUN yes | unminimize
 
 # install newer nodejs
-ENV NODE_MAJOR 20
+ENV NODE_MAJOR=20
 RUN apt-get install -y gpg curl \
   && mkdir -p /etc/apt/keyrings \
   && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
