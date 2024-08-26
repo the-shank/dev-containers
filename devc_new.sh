@@ -19,14 +19,24 @@ CONTAINER_NAME="$img-$proj"
 
 # default mount volumes
 DEFAULT_MOUNTS=(
-	"--volume /tmp/.X11-unix:/tmp/.X11-unix"
-	"--volume $HOME:/host_home"
-	"--volume $HOME/code:/home/shank/code"
-	"--volume $HOME/.ssh:/home/shank/.ssh"
-	"--volume $HOME/.cargo:/home/shank/.cargo"
-	"--volume $HOME/.rustup:/home/shank/.rustup"
-	"--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
+  "--volume /tmp/.X11-unix:/tmp/.X11-unix"
+  "--volume $HOME:/host_home"
+  "--volume $HOME/code:/home/shank/code"
+  "--volume $HOME/.ssh:/home/shank/.ssh"
+  "--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
 )
+
+if [ -d $HOME/.rustup ]; then
+  DEFAULT_MOUNTS+=("--volume $HOME/.rustup:/home/shank/.rustup")
+elif [ -d /evaldisk/shank/.rustup ]; then
+  DEFAULT_MOUNTS+=("--volume /evaldisk/shank/.rustup:/home/shank/.rustup")
+fi
+
+if [ -d $HOME/.cargo ]; then
+  DEFAULT_MOUNTS+=("--volume $HOME/.cargo:/home/shank/.cargo")
+elif [ -d /evaldisk/shank/.cargo ]; then
+  DEFAULT_MOUNTS+=("--volume /evaldisk/shank/.cargo:/home/shank/.cargo")
+fi
 
 # if /workdisk exists, then add it to the list of mounts as well
 if [ -d /workdisk ]; then
