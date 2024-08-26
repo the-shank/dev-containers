@@ -49,7 +49,10 @@ fi
 
 # if /home/common exists, then add it to the list of mounts as well
 if [ -d /home/common ]; then
-	DEFAULT_MOUNTS+=("--volume /home/common:/home/common")
+  read -p "Mount /home/common to /home/common? (y/n) : " mount_home_common
+  if [[ $mount_home_common == "y" || $mount_home_common == "Y" ]]; then
+    DEFAULT_MOUNTS+=("--volume /home/common:/home/common")
+  fi
 fi
 
 # default published ports
