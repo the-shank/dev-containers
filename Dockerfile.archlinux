@@ -43,7 +43,7 @@ RUN pacman -Qk 2>&1 \
   | sed -e 's/://' \
   | grep --invert-match --extended-regexp "tzdata|filesystem" \
   | grep --invert-match --extended-regexp "^[0-9]+$" \
-  | grep --invert-match --extended-regexp "22warning" \
+  | grep --invert-match --extended-regexp "2warning" \
   | xargs pacman -Sy --noconfirm
 
 # timezone
