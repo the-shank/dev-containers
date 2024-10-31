@@ -40,38 +40,63 @@ fi
 
 # if /workdisk exists, then add it to the list of mounts as well
 if [ -d /workdisk ]; then
-	DEFAULT_MOUNTS+=("--volume /workdisk:/workdisk")
+  DEFAULT_MOUNTS+=("--volume /workdisk:/workdisk")
 fi
 
 # if /evaldisk exists, then add it to the list of mounts as well
 if [ -d /evaldisk ]; then
-	DEFAULT_MOUNTS+=("--volume /evaldisk:/evaldisk")
+  DEFAULT_MOUNTS+=("--volume /evaldisk:/evaldisk")
 fi
 
-# if /home/common exists, then add it to the list of mounts as well
-if [ -d /home/common ]; then
+# if both /home/common and /evaldisk/shank exist, then as user which to mount at /home/common
+if [ -d /home/common ] && [ -d /evaldisk/shank ]; then
+  echo "Mount which to /home/common? (enter 1/2/3"
+  echo "1. /home/common"
+  echo "2. /evaldisk/common"
+  echo "3. None"
+  read selection
+  # ensure that the user enters a valid selection
+  if [[ $selection != "1" && $selection != "2" && $selection != "3" ]]; then
+    echo "Invalid selection"
+    exit 1
+  fi
+  if [[ $selection == "1" ]]; then
+    DEFAULT_MOUNTS+=("--volume /home/common:/home/common")
+  elif [[ $selection == "2" ]]; then
+    DEFAULT_MOUNTS+=("--volume /evaldisk/shank:/home/common")
+  fi
+
+elif [ -d /home/common ]; then
+  # if /home/common exists, then add it to the list of mounts as well
   read -p "Mount /home/common to /home/common? (y/n) : " mount_home_common
   if [[ $mount_home_common == "y" || $mount_home_common == "Y" ]]; then
     DEFAULT_MOUNTS+=("--volume /home/common:/home/common")
+  fi
+
+elif [ -d /evaldisk/shank ]; then
+  # if /evaldisk exists, then add /evaldisk/shank to the list of mounts as well
+  read -p "Mount /evaldisk/shank to /home/common? (y/n) : " mount_evaldisk_shank_to_common
+  if [[ $mount_evaldisk_shank_to_common == "y" || $mount_evaldisk_shank_to_common == "Y" ]]; then
+    DEFAULT_MOUNTS+=("--volume /evaldisk/shank:/home/common")
   fi
 fi
 
 # default published ports
 DEFAULT_PORTS=(
-	# "--publish 3306:3306"
+  # "--publish 3306:3306"
 )
 
 # build container
 echo ">> creating container '$CONTAINER_NAME' based on '$BASE_IMAGENAME'..."
 docker container run \
-	-it \
-	--label="no-prune" \
-	--name ${CONTAINER_NAME} \
-	--hostname ${CONTAINER_NAME} \
-	--security-opt seccomp=unconfined \
-	--cap-add=SYS_PTRACE \
-	${@:1} \
-	${DEFAULT_MOUNTS[@]} \
-	${DEFAULT_PORTS[@]} \
-	${BASE_IMAGENAME}
+  -it \
+  --label="no-prune" \
+  --name ${CONTAINER_NAME} \
+  --hostname ${CONTAINER_NAME} \
+  --security-opt seccomp=unconfined \
+  --cap-add=SYS_PTRACE \
+  ${@:1} \
+  ${DEFAULT_MOUNTS[@]} \
+  ${DEFAULT_PORTS[@]} \
+  ${BASE_IMAGENAME}
 # --env DISPLAY=$DISPLAY \
