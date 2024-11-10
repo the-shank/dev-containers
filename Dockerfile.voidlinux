@@ -94,10 +94,6 @@ RUN chsh ${USER} --shell /usr/bin/fish
 WORKDIR /home/${USER}
 USER ${USER}
 
-# nvchad
-RUN rm -rf ~/.config/nvim \
-  && git clone https://github.com/NvChad/NvChad ~/.config/nvim-nvchad --depth 1
-
 # dotfiles
 RUN git clone https://gitlab.com/shank/dotfiles.git \
   && cd dotfiles \

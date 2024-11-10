@@ -132,10 +132,6 @@ RUN chsh ${USER} --shell /usr/bin/fish
 WORKDIR /home/${USER}
 USER ${USER}
 
-# # nvchad
-# RUN rm -rf ~/.config/nvim \
-#   && git clone https://github.com/NvChad/NvChad ~/.config/nvim-nvchad --depth 1
-
 # fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
     /home/${USER}/.fzf/install --all
