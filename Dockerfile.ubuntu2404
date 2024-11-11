@@ -41,6 +41,8 @@ RUN apt-get install -y sudo \
   && apt-get autoremove -y
 
 # unminimize since this is a dev container
+RUN apt-get install -y unminimize \
+  && apt-get autoremove -y
 RUN yes | unminimize
 
 # install newer nodejs
@@ -58,9 +60,9 @@ RUN apt-get install -y \
     apt-file \
     autoconf \
     bat \
-    bfs \
     black \
     bpython \
+    build-essential \
     clang \
     clang-format \
     cmake \
@@ -76,11 +78,11 @@ RUN apt-get install -y \
     gettext \
     git \
     htop \
+    libclang-dev \
     libssl-dev \
     lld \
     make \
     neofetch \
-    ninja-build \
     openssl \
     parallel \
     patchelf \
@@ -140,10 +142,6 @@ RUN git clone https://gitlab.com/shank/dotfiles.git \
   && cd dotfiles \
   && git remote set-url origin git@gitlab.com:shank/dotfiles.git
 
-# # nvchad
-# RUN rm -rf ~/.config/nvim \
-#   && git clone https://github.com/NvChad/NvChad ~/.config/nvim-nvchad --depth 1
-
 # fzf
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
     /home/${USER}/.fzf/install --all
@@ -156,7 +154,7 @@ RUN /usr/bin/bash -c 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
 
 # install rust (using rustup)
 RUN /usr/bin/bash --login -c 'rustup install nightly stable'
-RUN /usr/bin/bash --login -c 'rustup default stable'
+RUN /usr/bin/bash --login -c 'rustup default nightly'
 
 # cargo utils
 RUN /usr/bin/fish --login -c 'cargo install stylua procs cargo-cache tokei difftastic'
