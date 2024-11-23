@@ -99,6 +99,7 @@ RUN apt-get install -y \
     sd \
     software-properties-common \
     stow \
+    tealdeer \
     tmux \
     tree \
     unar \
