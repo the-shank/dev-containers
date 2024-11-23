@@ -78,6 +78,7 @@ RUN apt-get install -y \
     gettext \
     git \
     htop \
+    jq \
     libclang-dev \
     libssl-dev \
     lld \
