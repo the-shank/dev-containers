@@ -99,6 +99,7 @@ RUN pacman -Sy --noconfirm \
   python-neovim \
   python-pip \
   python-pipx \
+  remake \
   ripgrep \
   rsync \
   rust-analyzer \
