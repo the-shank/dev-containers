@@ -15,7 +15,8 @@ RUN apt-get install -y \
   llvm \
   pkg-config \
   rustfilt \
-  help2man
+  help2man \
+  libcurl4-openssl-dev
 
 USER ${USER}
 
