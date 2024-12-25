@@ -161,7 +161,7 @@ RUN /usr/bin/bash --login -c 'rustup install nightly stable'
 RUN /usr/bin/bash --login -c 'rustup default nightly'
 
 # cargo utils
-RUN /usr/bin/fish --login -c 'cargo install stylua procs cargo-cache tokei difftastic'
+# RUN /usr/bin/fish --login -c 'cargo install cargo-cache'
 
 # stow packages
 RUN cd dotfiles \
@@ -191,9 +191,14 @@ SHELL ["/usr/bin/fish", "--login", "-c"]
 
 # nix packages
 RUN nix-env -iA \
-	nixpkgs.neovim \
-	nixpkgs.lazygit \
 	nixpkgs.just \
+	nixpkgs.lazygit \
+	nixpkgs.neovim \
+  nixpkgs.cargo-cache \
+  nixpkgs.difftastic \
+  nixpkgs.procs \
+  nixpkgs.stylua \
+  nixpkgs.tokei \
   nixpkgs.yazi
 
 # my utils (utils-rs)
