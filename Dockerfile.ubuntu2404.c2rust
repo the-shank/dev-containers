@@ -18,7 +18,9 @@ RUN apt-get install -y \
   help2man \
   libcurl4-openssl-dev \
   diffstat \
-  direnv
+  direnv \
+  jq \
+  texinfo
 
 USER ${USER}
 
