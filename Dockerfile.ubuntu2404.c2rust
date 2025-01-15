@@ -20,7 +20,8 @@ RUN apt-get install -y \
   diffstat \
   direnv \
   jq \
-  texinfo
+  texinfo \
+  help2man
 
 USER ${USER}
 
