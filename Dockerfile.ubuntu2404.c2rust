@@ -21,7 +21,8 @@ RUN apt-get install -y \
   direnv \
   jq \
   texinfo \
-  help2man
+  help2man \
+  opam
 
 USER ${USER}
 
