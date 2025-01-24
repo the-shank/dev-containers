@@ -1,0 +1,42 @@
+FROM devc-ubuntu2404
+
+ARG ME=shank
+
+USER root
+
+# additional deps
+RUN apt-get install -y \
+  bear \
+  clang \
+  cmake \
+  datamash \
+  libclang-dev \
+  libssl-dev \
+  llvm \
+  pkg-config \
+  help2man \
+  libcurl4-openssl-dev \
+  diffstat \
+  direnv \
+  jq \
+  texinfo \
+  help2man \
+  opam \
+  makeinfo
+
+USER ${USER}
+
+# Use scripts from C2RDataset project to install the following:
+# c2rust
+# laertes
+# CRustS
+# Concrat
+# Nopcrat
+# Crown
+
+# after starting container, use nix for installing
+# - neovim
+# - lazygit
+
+# start fish shell
+# ENTRYPOINT ["fish"]
