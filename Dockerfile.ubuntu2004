@@ -178,7 +178,8 @@ RUN nix-env -iA \
   nixpkgs.eza \
   nixpkgs.bat \
   nixpkgs.cmake \
-  nixpkgs.tmux
+  nixpkgs.tmux \
+  nixpkgs.bear
 
 # # my utils (utils-rs)
 # RUN git clone https://gitlab.com/shank/utils-rs.git \
