@@ -6,7 +6,6 @@ USER root
 
 # additional deps
 RUN apt-get install -y \
-  bear \
   clang \
   cmake \
   datamash \
