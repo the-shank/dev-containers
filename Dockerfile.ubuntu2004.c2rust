@@ -20,9 +20,7 @@ RUN apt-get install -y \
   direnv \
   jq \
   texinfo \
-  help2man \
   opam \
-  makeinfo \
   clang-tools \
   patchelf
 
