@@ -191,7 +191,7 @@ RUN nix-env -iA \
 
 # fisher (fish shell)
 RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-RUN fisher install patrickf1/fzf.fish
+RUN fisher install patrickf1/fzf.fish vitallium/tokyonight-fish
 #
 # # python packages
 # RUN pip install bpython
