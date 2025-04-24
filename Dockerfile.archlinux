@@ -22,17 +22,15 @@ RUN sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
   && locale-gen \
   && sed -i -e 's/LANG=.*/LANG=en_US.UTF-8/' /etc/locale.conf
 
-# add arcolinux repositories and keys
-RUN pacman -S --noconfirm wget
-RUN wget bit.ly/get-arcolinux-keys && chmod +x ./get-arcolinux-keys && sudo ./get-arcolinux-keys
+# adding chaotic-aur
+RUN pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com \
+  && pacman-key --lsign-key 3056513887B78AEB \
+  && pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' \
+  && pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' \
+  && echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
 
 # update again
 RUN pacman -Syu --noconfirm
-
-# arcolinux fixes
-RUN pacman -Sy --noconfirm arcolinux-system-config-git
-RUN /usr/local/bin/arcolinux-fix-pacman-conf
-RUN /usr/local/bin/arcolinux-fix-pacman-databases-and-keys
 
 # fix manpages
 # update all packages except: tzdata, filesystem

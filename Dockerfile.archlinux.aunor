@@ -16,9 +16,9 @@ RUN rustup +stable component add \
   rust-analyzer
 
 # install all targets (crates might be targeting different architectures)
-RUN rustup +stable target list \
-  | rg --invert-match installed \
-  | xargs -I{} rustup +stable target add {}
+# RUN rustup +stable target list \
+#   | rg --invert-match installed \
+#   | xargs -I{} rustup +stable target add {}
 
 # after starting container, use nix for installing
 # - neovim
