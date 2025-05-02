@@ -115,6 +115,7 @@ RUN pacman -Sy --noconfirm \
   tree-sitter-cli \
   unarchiver \
   unzip \
+  wget \
   xclip \
   xsel \
   yazi \
