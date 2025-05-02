@@ -53,6 +53,7 @@ RUN ln -s /usr/share/zoneinfo/America/Indianapolis /etc/localtime
 
 # packages
 RUN pacman -Sy --noconfirm \
+  7zip \
   bat \
   bc \
   bfs \
