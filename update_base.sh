@@ -58,9 +58,9 @@ fi
 
 # if both /home/common and /evaldisk/shank exist, then as user which to mount at /home/common
 if [ -d /home/common ] && [ -d /evaldisk/shank ]; then
-  echo "Mount which to /home/common? (enter 1/2/3"
+  echo "Mount which to /home/common? (enter 1/2/3)"
   echo "1. /home/common"
-  echo "2. /evaldisk/common"
+  echo "2. /evaldisk/shank"
   echo "3. None"
   read selection
   # ensure that the user enters a valid selection
