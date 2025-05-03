@@ -60,6 +60,7 @@ RUN pacman -Sy --noconfirm \
   bpython \
   clang \
   cmake \
+  datamash \
   difftastic \
   direnv \
   docker \
