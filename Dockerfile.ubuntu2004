@@ -73,6 +73,7 @@ RUN apt-get install -y \
     neofetch \
     ninja-build \
     pipx \
+    pkg-config \
     python-is-python3 \
     python3 \
     python3-pip \
@@ -179,8 +180,20 @@ RUN nix-env -iA \
   nixpkgs.bat \
   nixpkgs.cmake \
   nixpkgs.tmux \
-  nixpkgs.bear \
   nixpkgs.fd
+
+# install bear from source
+USER root
+RUN apt-get install -y libspdlog-dev nlohmann-json3-dev libgrpc++-dev protobuf-compiler-grpc libssl-dev libfmt-dev
+RUN git clone https://github.com/rizsotto/Bear.git
+RUN mkdir -p Bear/build && \
+  cd Bear/build && \
+  cmake -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu -DENABLE_UNIT_TESTS=OFF -DENABLE_FUNC_TESTS=OFF .. && \
+  make all -j$(nproc) && \
+  make install && \
+  cd ../.. && \
+  rm -r -f Bear
+USER ${USER}
 
 # # my utils (utils-rs)
 # RUN git clone https://gitlab.com/shank/utils-rs.git \
