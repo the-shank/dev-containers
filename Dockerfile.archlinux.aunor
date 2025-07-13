@@ -6,6 +6,14 @@ USER root
 
 # specific setup (end) ======================
 
+# additional packages required by crates in our dataset
+RUN pacman -Sy --noconfirm \
+  ffmpeg4.4
+
+# additional dev packages
+RUN pacman -Sy --noconfirm \
+  sccache
+
 USER ${USER}
 
 # install rustup components
