@@ -8,7 +8,8 @@ USER root
 
 # additional packages required by crates in our dataset
 RUN pacman -Sy --noconfirm \
-  ffmpeg4.4
+  ffmpeg4.4 \
+  mingw-w64-gcc
 
 # additional dev packages
 RUN pacman -Sy --noconfirm \
@@ -22,6 +23,12 @@ RUN rustup +stable component add \
   rustc-dev \
   llvm-tools-preview \
   rust-analyzer
+
+
+# install targets for aunor toolchain
+RUN rustup toolchain add nightly-2025-03-03
+RUN rustup +nightly-2025-03-03 target add \
+  x86_64-w64-mingw32-gcc
 
 # install all targets (crates might be targeting different architectures)
 # RUN rustup +stable target list \
