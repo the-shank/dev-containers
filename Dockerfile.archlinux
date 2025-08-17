@@ -73,6 +73,7 @@ RUN pacman -Sy --noconfirm \
   gdu \
   htop \
   jq \
+  jujutsu \
   just \
   lazygit \
   less \
