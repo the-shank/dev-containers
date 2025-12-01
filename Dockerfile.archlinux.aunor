@@ -9,7 +9,8 @@ USER root
 # additional packages required by crates in our dataset
 RUN pacman -Sy --noconfirm \
   ffmpeg4.4 \
-  mingw-w64-gcc
+  mingw-w64-gcc \
+  libxml2-legacy
 
 # additional dev packages
 RUN pacman -Sy --noconfirm \
