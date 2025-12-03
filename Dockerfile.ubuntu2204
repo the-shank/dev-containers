@@ -74,6 +74,7 @@ RUN apt-get install -y \
     gettext \
     git \
     htop \
+    jq \
     libssl-dev \
     lld \
     make \
@@ -154,6 +155,7 @@ RUN /usr/bin/fish --login -c 'cargo install stylua sd tealdeer procs cargo-cache
 # stow packages
 RUN cd dotfiles \
     && rm --force ${HOME}/.config/fish/functions/fish_user_key_bindings.fish \
+    && mv ${HOME}/.profile ${HOME}/.profile.bak \
     && stow --verbose --no-folding fish neovim tmux bins git gdb yazi neovim profile
 
 # tmux plugin manager
