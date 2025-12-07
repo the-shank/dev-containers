@@ -100,6 +100,8 @@ RUN apt-get install -y \
     rsync \
     sd \
     software-properties-common \
+    sqlite3 \
+    sqlite3-tools \
     stow \
     tealdeer \
     tmux \

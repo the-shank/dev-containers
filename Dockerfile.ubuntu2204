@@ -93,6 +93,8 @@ RUN apt-get install -y \
     ripgrep \
     rsync \
     software-properties-common \
+    sqlite3 \
+    sqlite3-tools \
     stow \
     tmux \
     tree \
