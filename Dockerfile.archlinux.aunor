@@ -10,7 +10,8 @@ USER root
 RUN pacman -Sy --noconfirm \
   ffmpeg4.4 \
   mingw-w64-gcc \
-  libxml2-legacy
+  libxml2-legacy \
+  rtl-sdr
 
 # additional dev packages
 RUN pacman -Sy --noconfirm \
