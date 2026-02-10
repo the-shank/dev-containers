@@ -4,8 +4,7 @@ set -eu
 set -o pipefail
 
 # params - base
-# BASE_IMAGENAME=devc-archlinux:base-devel
-BASE_IMAGENAME=devc-archlinux:latest
+BASE_IMAGENAME=devc-archlinux:base-devel
 BASE_DOCKERFILE=Containerfile.archlinux
 BASE_CONTAINERNAME=devc-archlinux
 
