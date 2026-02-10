@@ -2,11 +2,12 @@
 
 # Create a new dev-container based on an existing devc image
 
+set -x
 set -eu
 set -o pipefail
 
 imgtag=$(podman image ls | rg --ignore-case devc | fzf --prompt 'base-image> ' | awk '{printf "%s:%s\n", $1, $2}')
-img=$(echo $imgtag | cut -d':' -f1)
+img=$(echo $imgtag | cut -d':' -f1 | cut -d '/' -f2)
 tag=$(echo $imgtag | cut -d':' -f2)
 echo "selected image: $img:$tag"
 
