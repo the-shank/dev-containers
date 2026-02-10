@@ -1,0 +1,193 @@
+FROM quay.io/archlinux/archlinux:base-devel
+
+ARG USER=shank
+ARG PASSWD=pass
+ARG UID=1000
+ARG GID=1000
+
+ENV USER=${USER}
+ENV HOME=/home/${USER}
+
+# better colors
+ENV TERM=xterm-256color
+
+ENV CONTAINER_HOST=unix:///run/podman/podman.sock
+
+# update
+RUN pacman -Syu --noconfirm
+
+# init keyring
+RUN pacman-key --init
+
+# locale
+RUN sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+  && locale-gen \
+  && sed -i -e 's/LANG=.*/LANG=en_US.UTF-8/' /etc/locale.conf
+
+# adding chaotic-aur
+RUN pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com \
+  && pacman-key --lsign-key 3056513887B78AEB \
+  && pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' \
+  && pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' \
+  && echo -e "[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+
+# update again
+RUN pacman -Syu --noconfirm
+
+# fix manpages
+# update all packages except: tzdata, filesystem
+RUN pacman -Qk 2>&1 \
+  | grep warning: \
+  | awk '{print $2}' \
+  | sort -u \
+  | sed -e 's/://' \
+  | grep --invert-match --extended-regexp "tzdata|filesystem" \
+  | grep --invert-match --extended-regexp "^[0-9]+$" \
+  | grep --invert-match --extended-regexp "2warning" \
+  | xargs pacman -Sy --noconfirm
+
+# timezone
+ENV TZ="America/Indianapolis"
+RUN ln -s /usr/share/zoneinfo/America/Indianapolis /etc/localtime
+
+# remove mlocate -- to be replaced with plocate below
+# RUN pacman -R --noconfirm mlocate
+
+# packages
+RUN pacman -Sy --noconfirm \
+  7zip \
+  bat \
+  bc \
+  bfs \
+  bpython \
+  clang \
+  cmake \
+  datamash \
+  difftastic \
+  direnv \
+  docker \
+  exa \
+  expac \
+  fd \
+  fish \
+  fzf \
+  gdb \
+  gdu \
+  htop \
+  jq \
+  jujutsu \
+  just \
+  lazygit \
+  less \
+  lld \
+  lldb \
+  man-db \
+  man-pages \
+  neofetch \
+  neovim \
+  ninja \
+  nodejs \
+  npm \
+  openssh \
+  pacman-contrib \
+  parallel \
+  paru \
+  patchelf \
+  plocate \
+  podman \
+  poppler \
+  prettier \
+  procs \
+  python \
+  python-black \
+  python-neovim \
+  python-pip \
+  python-pipx \
+  remake \
+  ripgrep \
+  rsync \
+  rust-analyzer \
+  rustup \
+  sd \
+  shfmt \
+  stow \
+  strace \
+  stylua \
+  tealdeer \
+  tmux \
+  tokei \
+  tree \
+  tree-sitter \
+  tree-sitter-cli \
+  unarchiver \
+  unzip \
+  wget \
+  which \
+  xclip \
+  xsel \
+  yazi \
+  zoxide
+
+# fish prompt
+RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
+RUN sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
+
+# create user
+RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
+    echo "${USER}:${PASSWD}" | chpasswd && \
+    echo "${USER} ALL=(ALL) ALL" >> /etc/sudoers
+RUN echo "${USER}:${PASSWD}" | chpasswd
+RUN chown -R ${USER} /home/${USER}
+
+# change users default shell
+RUN chsh ${USER} --shell /usr/bin/fish
+
+# change to $USER directory
+WORKDIR /home/${USER}
+USER ${USER}
+
+# dotfiles
+RUN git clone https://gitlab.com/shank/dotfiles.git \
+  && cd dotfiles \
+  && git remote set-url origin git@gitlab.com:shank/dotfiles.git
+
+# # install rust (using rustup)
+# ENV RUSTUP_MAX_RETRIES=10
+# RUN rustup install stable --profile minimal
+# RUN rustup +stable component add clippy rustfmt
+# RUN rustup install nightly --profile minimal
+# RUN rustup +nightly component add clippy rustfmt rust-src
+# RUN rustup default nightly
+#
+# # cargo utils
+# RUN /usr/bin/bash --login -c 'cargo install cargo-cache'
+
+# stow packages
+RUN cd dotfiles \
+    && rm --force ${HOME}/.config/fish/functions/fish_user_key_bindings.fish \
+    && stow --verbose --no-folding fish neovim tmux bins git gdb yazi neovim profile
+
+# tmux plugin manager
+RUN git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+
+# # nix installation
+# USER root
+# RUN mkdir /nix && chown ${USER} /nix
+# USER ${USER}
+# RUN curl -L https://nixos.org/nix/install | sh
+
+# change the shell for the rest of the commands commands
+SHELL ["/usr/bin/fish", "--login", "-c"]
+
+# # my utils (utils-rs)
+# RUN git clone https://gitlab.com/shank/utils-rs.git \
+#   && cd utils-rs \
+#   && just install \
+#   && cd .. \
+#   && rm -r utils-rs
+
+# fisher (fish shell)
+# RUN curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+RUN ["/usr/bin/fish", "-c", "curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher"]
+# RUN fisher install patrickf1/fzf.fish vitallium/tokyonight-fish
+RUN ["/usr/bin/fish", "-c", "fisher install patrickf1/fzf.fish vitallium/tokyonight-fish"]

@@ -5,7 +5,7 @@ set -o pipefail
 
 usage() {
   echo "Usage:"
-  echo "./update_base.sh <BASE_IMAGENAME> <BASE_DOCKERFILE> <BASE_CONTAINERNAME> [<extra_args>]"
+  echo "./update_base.sh <BASE_IMAGENAME> <BASE_CONTAINERFILE> <BASE_CONTAINERNAME> [<extra_args>]"
 }
 
 # check that we have exactly 3 params
@@ -18,11 +18,11 @@ DEVC_REPO_DIR=/home/shank/code/misc/dev-container
 
 # params - base
 BASE_IMAGENAME=$1
-BASE_DOCKERFILE=$2
+BASE_CONTAINERFILE=$2
 BASE_CONTAINERNAME=$3
 
 echo "BASE_IMAGENAME:${BASE_IMAGENAME}"
-echo "BASE_DOCKERFILE:${BASE_DOCKERFILE}"
+echo "BASE_CONTAINERFILE:${BASE_CONTAINERFILE}"
 echo "BASE_CONTAINERNAME:${BASE_CONTAINERNAME}"
 
 # default mount volumes
@@ -32,6 +32,7 @@ DEFAULT_MOUNTS=(
   "--volume $HOME/code:/home/shank/code"
   "--volume $HOME/.ssh:/home/shank/.ssh"
   "--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
+  "--volume $XDG_RUNTIME_DIR/podman/podman.sock:/run/podman/podman.sock"
 )
 
 if [ -d $HOME/.rustup ]; then
@@ -96,28 +97,33 @@ DEFAULT_PORTS=(
 
 # stop running devc container
 echo ">> [0] stopping (and removing) existing container if any..."
-! docker container stop $BASE_CONTAINERNAME
-! docker container rm --force $BASE_CONTAINERNAME
+! podman container stop $BASE_CONTAINERNAME
+! podman container rm --force $BASE_CONTAINERNAME
 
 # update base image
 echo ">> [1] updating base image..."
-docker image build \
+podman image build \
   ${@:4} \
   --build-arg UID=$(id -u) \
   --build-arg GID=$(id -g) \
   --tag ${BASE_IMAGENAME} \
-  --file "$DEVC_REPO_DIR/$BASE_DOCKERFILE" .
+  --file "$DEVC_REPO_DIR/$BASE_CONTAINERFILE" .
 
 # build container
 echo ">> [2] creating and running the proj container..."
-docker container run \
+podman container run \
   -it \
   --label="no-prune" \
   --name ${BASE_CONTAINERNAME} \
   --hostname ${BASE_CONTAINERNAME} \
+  --userns=keep-id \
+  --security-opt label=disable \
   --security-opt seccomp=unconfined \
   --cap-add=SYS_PTRACE \
+  --env DISPLAY=${DISPLAY:-:0} \
+  --env CONTAINER_HOST=unix:///run/podman/podman.sock \
   ${DEFAULT_MOUNTS[@]} \
   ${DEFAULT_PORTS[@]} \
   ${BASE_IMAGENAME}
 # --env DISPLAY=$DISPLAY \
+# --userns=keep-id \
