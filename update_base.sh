@@ -115,7 +115,7 @@ podman container run \
   -it \
   --label="no-prune" \
   --name ${BASE_CONTAINERNAME} \
-  --hostname ${BASE_CONTAINERNAME} \
+  --hostname "${BASE_CONTAINERNAME}-$(cat /etc/hostname)" \
   --userns=keep-id \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
