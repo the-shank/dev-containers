@@ -102,8 +102,37 @@ echo ">> [0] stopping (and removing) existing container if any..."
 
 # update base image
 echo ">> [1] updating base image..."
+
+# Separate build args from run args
+BUILD_ARGS=()
+RUN_ARGS=()
+
+i=4 # Start from 4th argument (after the 3 required params)
+while [ $i -le $# ]; do
+  arg="${!i}"
+  case "$arg" in
+    -v | --volume | --mount)
+      # Volume args go to run command (this arg + next arg)
+      RUN_ARGS+=("$arg")
+      i=$((i + 1))
+      if [ $i -le $# ]; then
+        RUN_ARGS+=("${!i}")
+      fi
+      ;;
+    -v=* | --volume=* | --mount=*)
+      # Volume args with = go to run command
+      RUN_ARGS+=("$arg")
+      ;;
+    *)
+      # Everything else goes to build
+      BUILD_ARGS+=("$arg")
+      ;;
+  esac
+  i=$((i + 1))
+done
+
 docker image build \
-  ${@:4} \
+  "${BUILD_ARGS[@]}" \
   --build-arg UID=$(id -u) \
   --build-arg GID=$(id -g) \
   --tag ${BASE_IMAGENAME} \
@@ -124,6 +153,7 @@ docker container run \
   --cap-add=AUDIT_WRITE \
   ${DEFAULT_MOUNTS[@]} \
   ${DEFAULT_PORTS[@]} \
+  "${RUN_ARGS[@]}" \
   ${BASE_IMAGENAME}
 # --userns=keep-id \
 # --env DISPLAY=${DISPLAY:-:0} \

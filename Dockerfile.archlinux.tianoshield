@@ -9,7 +9,6 @@ USER root
 RUN pacman -Sy --noconfirm \
   nasm \
   iasl \
-  libutil-linux \
   qemu-desktop
 
 USER ${USER}
