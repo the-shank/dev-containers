@@ -151,12 +151,12 @@ docker container run \
   --cap-add=NET_RAW \
   --cap-add=MKNOD \
   --cap-add=AUDIT_WRITE \
+  --env DISPLAY=${DISPLAY:-:0} \
   ${DEFAULT_MOUNTS[@]} \
   ${DEFAULT_PORTS[@]} \
   "${RUN_ARGS[@]}" \
   ${BASE_IMAGENAME}
 # --userns=keep-id \
-# --env DISPLAY=${DISPLAY:-:0} \
 # --env CONTAINER_HOST=unix:///run/podman/podman.sock \
 # --env DISPLAY=$DISPLAY \
 # --userns=keep-id \
