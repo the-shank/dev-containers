@@ -32,7 +32,7 @@ DEFAULT_MOUNTS=(
   "--volume $HOME/code:/home/shank/code"
   "--volume $HOME/.ssh:/home/shank/.ssh"
   "--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
-  "--volume $XDG_RUNTIME_DIR/podman/podman.sock:/run/podman/podman.sock"
+  # "--volume $XDG_RUNTIME_DIR/podman/podman.sock:/run/podman/podman.sock"
 )
 
 if [ -d $HOME/.rustup ]; then
@@ -97,12 +97,12 @@ DEFAULT_PORTS=(
 
 # stop running devc container
 echo ">> [0] stopping (and removing) existing container if any..."
-! podman container stop $BASE_CONTAINERNAME
-! podman container rm --force $BASE_CONTAINERNAME
+! docker container stop $BASE_CONTAINERNAME
+! docker container rm --force $BASE_CONTAINERNAME
 
 # update base image
 echo ">> [1] updating base image..."
-podman image build \
+docker image build \
   ${@:4} \
   --build-arg UID=$(id -u) \
   --build-arg GID=$(id -g) \
@@ -111,22 +111,22 @@ podman image build \
 
 # build container
 echo ">> [2] creating and running the proj container..."
-podman container run \
+docker container run \
   -it \
   --label="no-prune" \
   --name ${BASE_CONTAINERNAME} \
   --hostname "${BASE_CONTAINERNAME}-$(cat /etc/hostname)" \
-  --userns=keep-id \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
   --cap-add=SYS_PTRACE \
   --cap-add=NET_RAW \
   --cap-add=MKNOD \
   --cap-add=AUDIT_WRITE \
-  --env DISPLAY=${DISPLAY:-:0} \
-  --env CONTAINER_HOST=unix:///run/podman/podman.sock \
   ${DEFAULT_MOUNTS[@]} \
   ${DEFAULT_PORTS[@]} \
   ${BASE_IMAGENAME}
+# --userns=keep-id \
+# --env DISPLAY=${DISPLAY:-:0} \
+# --env CONTAINER_HOST=unix:///run/podman/podman.sock \
 # --env DISPLAY=$DISPLAY \
 # --userns=keep-id \

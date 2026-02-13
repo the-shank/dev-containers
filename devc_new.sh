@@ -6,7 +6,7 @@ set -x
 set -eu
 set -o pipefail
 
-imgtag=$(podman image ls | rg --ignore-case devc | fzf --prompt 'base-image> ' | awk '{printf "%s:%s\n", $1, $2}')
+imgtag=$(docker image ls | rg --ignore-case devc | fzf --prompt 'base-image> ' | awk '{printf "%s:%s\n", $1, $2}')
 img=$(echo $imgtag | cut -d':' -f1 | cut -d '/' -f2)
 tag=$(echo $imgtag | cut -d':' -f2)
 echo "selected image: $img:$tag"
@@ -25,7 +25,7 @@ DEFAULT_MOUNTS=(
   "--volume $HOME/code:/home/shank/code"
   "--volume $HOME/.ssh:/home/shank/.ssh"
   "--volume $SSH_AUTH_SOCK:/tmp/ssh-agent.socket"
-  "--volume $XDG_RUNTIME_DIR/podman/podman.sock:/run/podman/podman.sock"
+  # "--volume $XDG_RUNTIME_DIR/podman/podman.sock:/run/podman/podman.sock"
 )
 
 if [ -d $HOME/.rustup ]; then
@@ -90,18 +90,18 @@ DEFAULT_PORTS=(
 
 # build container
 echo ">> creating container '$CONTAINER_NAME' based on '$BASE_IMAGENAME'..."
-podman container run \
+docker container run \
   -it \
   --label="no-prune" \
   --name ${CONTAINER_NAME} \
   --hostname ${CONTAINER_NAME} \
-  --userns=keep-id \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
   --cap-add=SYS_PTRACE \
-  --env CONTAINER_HOST=unix:///run/podman/podman.sock \
   ${@:1} \
   ${DEFAULT_MOUNTS[@]} \
   ${DEFAULT_PORTS[@]} \
   ${BASE_IMAGENAME}
+# --userns=keep-id \
 # --env DISPLAY=$DISPLAY \
+# --env CONTAINER_HOST=unix:///run/podman/podman.sock \
