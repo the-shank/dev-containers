@@ -94,14 +94,15 @@ docker container run \
   -it \
   --label="no-prune" \
   --name ${CONTAINER_NAME} \
-  --hostname ${CONTAINER_NAME} \
+  --hostname "${CONTAINER_NAME}-$(cat /etc/hostname)" \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
   --cap-add=SYS_PTRACE \
+  --env DISPLAY=${DISPLAY:-:0} \
   ${@:1} \
   ${DEFAULT_MOUNTS[@]} \
   ${DEFAULT_PORTS[@]} \
   ${BASE_IMAGENAME}
+# --env CONTAINER_HOST=unix:///run/podman/podman.sock \
 # --userns=keep-id \
 # --env DISPLAY=$DISPLAY \
-# --env CONTAINER_HOST=unix:///run/podman/podman.sock \
