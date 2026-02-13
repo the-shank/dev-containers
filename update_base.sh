@@ -120,6 +120,9 @@ podman container run \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
   --cap-add=SYS_PTRACE \
+  --cap-add=NET_RAW \
+  --cap-add=MKNOD \
+  --cap-add=AUDIT_WRITE \
   --env DISPLAY=${DISPLAY:-:0} \
   --env CONTAINER_HOST=unix:///run/podman/podman.sock \
   ${DEFAULT_MOUNTS[@]} \
