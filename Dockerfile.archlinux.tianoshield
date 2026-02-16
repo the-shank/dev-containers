@@ -7,8 +7,9 @@ USER root
 # specific setup (end) ======================
 
 RUN pacman -Sy --noconfirm \
-  nasm \
+  bear \
   iasl \
+  nasm \
   qemu-desktop
 
 USER ${USER}
