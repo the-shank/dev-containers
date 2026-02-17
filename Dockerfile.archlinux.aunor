@@ -11,6 +11,8 @@ RUN pacman -Sy --noconfirm \
   ffmpeg4.4 \
   mingw-w64-gcc \
   libxml2-legacy \
+  arm-none-eabi-gcc \
+  aarch64-linux-gnu-gcc \
   rtl-sdr
 
 # additional dev packages
