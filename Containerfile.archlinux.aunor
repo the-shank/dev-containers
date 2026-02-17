@@ -1,4 +1,4 @@
-FROM localhost/devc-archlinux:base-devel
+FROM devc-archlinux:base-devel
 
 USER root
 
@@ -13,9 +13,9 @@ RUN pacman -Sy --noconfirm \
   libxml2-legacy \
   rtl-sdr
 
-# additional dev packages
-RUN pacman -Sy --noconfirm \
-  sccache
+# # additional dev packages
+# RUN pacman -Sy --noconfirm \
+#   sccache
 
 USER ${USER}
 
