@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 # params - base
-BASE_IMAGENAME=localhost/devc-archlinux-aunor:base-devel
+BASE_IMAGENAME=devc-archlinux-aunor:base-devel
 BASE_DOCKERFILE=Dockerfile.archlinux.tianoshield
 BASE_CONTAINERNAME=devc-archlinux-aunor
 
