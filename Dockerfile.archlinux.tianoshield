@@ -9,6 +9,7 @@ USER root
 RUN pacman -Sy --noconfirm \
   bear \
   iasl \
+  llvm \
   nasm \
   qemu-desktop \
   uncrustify
