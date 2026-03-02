@@ -106,6 +106,7 @@ RUN pacman -Sy --noconfirm \
   rust-analyzer \
   rustup \
   sd \
+  shellcheck \
   shfmt \
   stow \
   strace \
