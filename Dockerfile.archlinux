@@ -71,6 +71,7 @@ RUN pacman -Sy --noconfirm \
   fzf \
   gdb \
   gdu \
+  git-filter-repo \
   htop \
   jq \
   jujutsu \
