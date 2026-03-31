@@ -87,6 +87,7 @@ RUN pacman -Sy --noconfirm \
   ninja \
   nodejs \
   npm \
+  opencode \
   openssh \
   pacman-contrib \
   parallel \
