@@ -71,6 +71,7 @@ RUN pacman -Sy --noconfirm \
   fzf \
   gdb \
   gdu \
+  git-delta \
   git-filter-repo \
   htop \
   jq \
