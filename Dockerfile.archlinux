@@ -64,6 +64,7 @@ RUN pacman -Sy --noconfirm \
   difftastic \
   direnv \
   docker \
+  dust \
   exa \
   expac \
   fd \
@@ -129,8 +130,8 @@ RUN pacman -Sy --noconfirm \
   zoxide
 
 # fish prompt
-RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
-RUN sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
+# RUN sd -s "'>'" "' |'" /usr/share/fish/functions/fish_prompt.fish
+# RUN sd -s "'#'" "' #'" /usr/share/fish/functions/fish_prompt.fish
 
 # create user
 RUN useradd --create-home ${USER} --uid ${UID} --shell /usr/bin/bash && \
@@ -156,7 +157,7 @@ RUN rustup install nightly stable
 RUN rustup default nightly
 
 # cargo utils
-RUN /usr/bin/bash --login -c 'cargo install cargo-cache'
+# RUN /usr/bin/bash --login -c 'cargo install cargo-cache'
 
 # stow packages
 RUN cd dotfiles \
